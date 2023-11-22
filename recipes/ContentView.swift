@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import MarkdownUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
@@ -17,6 +18,15 @@ struct ContentView: View {
             List {
                 ForEach(items) { item in
                     NavigationLink {
+                        VStack {
+                            Markdown {
+                                """
+                                `let x = 5`
+                                
+                                *Item* at **timestamp**
+                                """
+                            }
+                        }
                         Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
                     } label: {
                         Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
