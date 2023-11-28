@@ -16,45 +16,24 @@ struct ContentView: View {
     var body: some View {
         NavigationSplitView {
             List {
-                ForEach(items) { item in
+                /// a section for browse, search, favorites
+                Section(header: Text("Top Level Actions")) {
                     NavigationLink {
-                        ScrollView {
-                            VStack {
-                                Markdown {
-                                    item.title
-                                }
-                                .padding()
-                                Markdown {
-                                    item.ingredients
-                                }
-                                .padding()
-                                Markdown {
-                                    item.instructions
-                                }
-                                .padding()
-                            }
-                        }
+                        browseAllList
                     } label: {
-                        Text(item.title)
+                        Text("Browse All")
+                    }
+                    NavigationLink {
+                        Text("Search stuff")
+                    } label: {
+                        Text("Search")
                     }
                 }
-                .onDelete(perform: deleteItems)
+                /// all the categories
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: initializeRecipes){
-                        Label("Initialize", systemImage: "folder.badge.plus")
-                    }
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
+        } content: {
+            browseAllList
+
         } detail: {
             Text("Select an item")
         }
@@ -74,6 +53,7 @@ struct ContentView: View {
             }
         }
     }
+    
     private func initializeRecipes() {
         withAnimation {
             //        for recipe in sampleRecipes {
@@ -90,7 +70,51 @@ struct ContentView: View {
             }
         }
     }
+    
+    private var browseAllList: some View {
+        List {
+            ForEach(items) { item in
+                NavigationLink {
+                    ScrollView {
+                        VStack {
+                            Markdown {
+                                item.title
+                            }
+                            .padding()
+                            Markdown {
+                                item.ingredients
+                            }
+                            .padding()
+                            Markdown {
+                                item.instructions
+                            }
+                            .padding()
+                        }
+                    }
+                } label: {
+                    Text(item.title)
+                }
+            }
+            .onDelete(perform: deleteItems)
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                EditButton()
+            }
+            ToolbarItem {
+                Button(action: initializeRecipes){
+                    Label("Initialize", systemImage: "folder.badge.plus")
+                }
+            }
+            ToolbarItem {
+                Button(action: addItem) {
+                    Label("Add Item", systemImage: "plus")
+                }
+            }
+        }
+    }
 }
+
 
 #Preview {
     ContentView()
