@@ -18,18 +18,24 @@ struct ContentView: View {
             List {
                 ForEach(items) { item in
                     NavigationLink {
-                        VStack {
-                            Markdown {
-                                """
-                                `let x = 5`
-                                test
-                                *Item* at **timestamp**
-                                """
+                        ScrollView {
+                            VStack {
+                                Markdown {
+                                    item.title
+                                }
+                                .padding()
+                                Markdown {
+                                    item.ingredients
+                                }
+                                .padding()
+                                Markdown {
+                                    item.instructions
+                                }
+                                .padding()
                             }
                         }
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
                     } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        Text(item.title)
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -37,6 +43,11 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
+                }
+                ToolbarItem {
+                    Button(action: initializeRecipes){
+                        Label("Initialize", systemImage: "folder.badge.plus")
+                    }
                 }
                 ToolbarItem {
                     Button(action: addItem) {
@@ -51,7 +62,7 @@ struct ContentView: View {
 
     private func addItem() {
         withAnimation {
-            let newItem = Item(timestamp: Date())
+            let newItem = Item(title: "Some Item", ingredients: "Some stuff", instructions: "Do something")
             modelContext.insert(newItem)
         }
     }
@@ -60,6 +71,22 @@ struct ContentView: View {
         withAnimation {
             for index in offsets {
                 modelContext.delete(items[index])
+            }
+        }
+    }
+    private func initializeRecipes() {
+        withAnimation {
+            //        for recipe in sampleRecipes {
+            //            modelContext.insert(recipe)
+            //        }
+            if let recipes = loadJson(filename: "SampleData") {
+                for recipe in recipes {
+                    modelContext.insert(Item(
+                        title: recipe.title,
+                        ingredients: recipe.ingredients,
+                        instructions: recipe.instructions
+                    ))
+                }
             }
         }
     }
