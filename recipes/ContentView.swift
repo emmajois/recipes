@@ -12,24 +12,47 @@ import MarkdownUI
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
+    @State fileprivate var showingAddRecipeSheet = false
 
     var body: some View {
         NavigationSplitView {
             List {
-                /// a section for browse, search, favorites
-                Section(header: Text("Top Level Actions")) {
+                // a section for browse, search, favorites
+                Section(header: Text("Actions")) {
                     NavigationLink {
                         browseAllList
                     } label: {
-                        Text("Browse All")
+                        Label("Browse All", systemImage: "list.bullet")
                     }
                     NavigationLink {
-                        Text("Search stuff")
+                        Text("Search page")
                     } label: {
-                        Text("Search")
+                        Label("Search", systemImage: "magnifyingglass")
+                    }
+                    NavigationLink {
+                        Text("All favorites")
+                    } label: {
+                        Label("Favorites", systemImage: "star.fill")
                     }
                 }
-                /// all the categories
+                // all the categories
+                Section(header: Text("Categories")) {
+                    NavigationLink {
+                        Text("breakfast")
+                    } label: {
+                        Text("Breakfast")
+                    }
+                    NavigationLink {
+                        Text("lunch")
+                    } label: {
+                        Text("Lunch")
+                    }
+                    NavigationLink {
+                        Text("Dinner")
+                    } label: {
+                        Text("Dinner")
+                    }
+                }
             }
         } content: {
             browseAllList
@@ -38,12 +61,15 @@ struct ContentView: View {
             Text("Select an item")
         }
     }
-
+    
+//MARK: - Functions
     private func addItem() {
-        withAnimation {
-            let newItem = Item(title: "Some Item", ingredients: "Some stuff", instructions: "Do something")
-            modelContext.insert(newItem)
-        }
+        // TODO: redo the new item logic
+//        withAnimation {
+//            let newItem = Item(title: "Some Item", ingredients: "Some stuff", instructions: "Do something")
+//            modelContext.insert(newItem)
+//        }
+        showingAddRecipeSheet.toggle()
     }
 
     private func deleteItems(offsets: IndexSet) {
@@ -56,6 +82,7 @@ struct ContentView: View {
     
     private func initializeRecipes() {
         withAnimation {
+            // TODO: Make this automatically load them in
             //        for recipe in sampleRecipes {
             //            modelContext.insert(recipe)
             //        }
@@ -71,6 +98,7 @@ struct ContentView: View {
         }
     }
     
+// MARK: - Variables
     private var browseAllList: some View {
         List {
             ForEach(items) { item in
@@ -110,10 +138,49 @@ struct ContentView: View {
                 Button(action: addItem) {
                     Label("Add Item", systemImage: "plus")
                 }
+                .sheet(isPresented: $showingAddRecipeSheet) {
+                    AddSheetView()
+                }
+            }
+        }
+    }
+
+// MARK: - Structs
+    struct AddSheetView: View {
+        @Environment(\.dismiss) var dismiss
+        @State var recipeTitle: String = ""
+        @State var ingredients: String = ""
+        @State var instructions: String = ""
+        
+        var body: some View {
+            NavigationView {
+                Form {
+                    Section(header: Text("Recipe Information")) {
+                        TextField("Recipe Title", text: $recipeTitle)
+                        //all the rest of the metadata that will be added
+                    }
+                    Section(header: Text("Recipe Ingredients")) {
+                        TextField("Ingredients", text: $ingredients)
+                        //Rest that goes with the recipes
+                    }
+                    Section(header: Text("Recipe Instructions")) {
+                        TextField("Instructions", text: $instructions)
+                        //Rest that will go with instructions
+                    }
+                }
+            }
+            //TODO: Figure out why the toolbar isn't showing up on the form
+            .toolbar {
+                ToolbarItem{
+                    Button("test", systemImage: "xmark.circle") {
+                        dismiss()
+                    }
+                }
             }
         }
     }
 }
+
 
 
 #Preview {
