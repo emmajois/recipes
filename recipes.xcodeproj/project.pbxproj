@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		261ADF9E2B15AB5C001AAB81 /* SampleData.json in Resources */ = {isa = PBXBuildFile; fileRef = 261ADF9D2B15AB5C001AAB81 /* SampleData.json */; };
+		263272732B1AF1E900D08CFE /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263272722B1AF1E900D08CFE /* Recipe.swift */; };
 		26B8986E2B0DAA930011142B /* recipesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8986D2B0DAA930011142B /* recipesApp.swift */; };
 		26B898702B0DAA930011142B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8986F2B0DAA930011142B /* ContentView.swift */; };
 		26B898722B0DAA930011142B /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B898712B0DAA930011142B /* Item.swift */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		261ADF9D2B15AB5C001AAB81 /* SampleData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SampleData.json; sourceTree = "<group>"; };
+		263272722B1AF1E900D08CFE /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		26B8986A2B0DAA930011142B /* recipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = recipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26B8986D2B0DAA930011142B /* recipesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recipesApp.swift; sourceTree = "<group>"; };
 		26B8986F2B0DAA930011142B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				26B8986D2B0DAA930011142B /* recipesApp.swift */,
 				26B8986F2B0DAA930011142B /* ContentView.swift */,
 				26B898712B0DAA930011142B /* Item.swift */,
+				263272722B1AF1E900D08CFE /* Recipe.swift */,
 				26B898732B0DAA940011142B /* Assets.xcassets */,
 				26B898752B0DAA940011142B /* Preview Content */,
 				26CFECDE2B15A5E6007CA99C /* SampleRecipes.swift */,
@@ -279,6 +282,7 @@
 				26B898722B0DAA930011142B /* Item.swift in Sources */,
 				26B8986E2B0DAA930011142B /* recipesApp.swift in Sources */,
 				26CFECDF2B15A5E6007CA99C /* SampleRecipes.swift in Sources */,
+				263272732B1AF1E900D08CFE /* Recipe.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
