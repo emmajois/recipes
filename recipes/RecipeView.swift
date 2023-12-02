@@ -1,17 +1,17 @@
 //
-//  ContentView.swift
+//  Recipe View.swift
 //  recipes
 //
-//  Created by Emma Swalberg on 11/21/23.
+//  Created by Emma Swalberg on 12/2/23.
 //
 
 import SwiftUI
 import SwiftData
 import MarkdownUI
 
-struct ContentView: View {
+struct RecipeView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var recipes: [Recipe]
     @State fileprivate var showingAddRecipeSheet = false
 
     var body: some View {
@@ -75,52 +75,52 @@ struct ContentView: View {
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
-                modelContext.delete(items[index])
+                modelContext.delete(recipes[index])
             }
         }
     }
     
     private func initializeRecipes() {
         withAnimation {
-            // TODO: Make this automatically load them in
+            // TODO: Make this automatically load them in with correct fields
             //        for recipe in sampleRecipes {
             //            modelContext.insert(recipe)
             //        }
-            if let recipes = loadJson(filename: "SampleData") {
-                for recipe in recipes {
-                    modelContext.insert(Item(
-                        title: recipe.title,
-                        ingredients: recipe.ingredients,
-                        instructions: recipe.instructions
-                    ))
-                }
-            }
+//            if let recipes = loadJson(filename: "SampleData") {
+//                for recipe in recipes {
+//                    modelContext.insert(Recipe(
+//                        title: recipe.title
+//                        ingredients: recipe.ingredients,
+//                        instructions: recipe.instructions
+//                    ))
+//                }
+//            }
         }
     }
     
 // MARK: - Variables
     private var browseAllList: some View {
         List {
-            ForEach(items) { item in
+            ForEach(recipes) { recipe in
                 NavigationLink {
                     ScrollView {
                         VStack {
                             Markdown {
-                                item.title
+                                recipe.title
                             }
                             .padding()
                             Markdown {
-                                item.ingredients
+                                //item.ingredients
                             }
                             .padding()
                             Markdown {
-                                item.instructions
+                                //item.instructions
                             }
                             .padding()
                         }
                     }
                 } label: {
-                    Text(item.title)
+                    Text(recipe.title)
                 }
             }
             .onDelete(perform: deleteItems)
@@ -153,7 +153,7 @@ struct ContentView: View {
         @State var instructions: String = ""
         
         var body: some View {
-            NavigationView {
+            NavigationStack {
                 Form {
                     Section(header: Text("Recipe Information")) {
                         TextField("Recipe Title", text: $recipeTitle)
@@ -172,7 +172,7 @@ struct ContentView: View {
             //TODO: Figure out why the toolbar isn't showing up on the form
             .toolbar {
                 ToolbarItem{
-                    Button("test", systemImage: "xmark.circle") {
+                    Button("", systemImage: "xmark.circle") {
                         dismiss()
                     }
                 }
@@ -184,6 +184,6 @@ struct ContentView: View {
 
 
 #Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+    RecipeView()
+        .modelContainer(for: Recipe.self, inMemory: true)
 }

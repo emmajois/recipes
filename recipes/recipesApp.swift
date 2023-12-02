@@ -25,8 +25,8 @@ struct recipesApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RecipeView()
         }
-        .modelContainer(for: [Item.self])
+        .modelContainer(for: [Recipe.self])
     }
 }

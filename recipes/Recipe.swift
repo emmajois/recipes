@@ -1,5 +1,5 @@
 //
-//  Item.swift
+//  Recipe.swift
 //  recipes
 //
 //  Created by Emma Swalberg on 11/21/23.
@@ -16,14 +16,14 @@ final class Recipe {
     var prepTime: Int
     var cookTime: Int
     var servings: Int
-    var expertise: expertiseEnum
+    var expertise: String
     var calories: Int
     var isFavorite: Bool
     var ingredients: [RecipeIngredient]
     var instructions: [RecipeInstruction]
     var categories: [RecipeCategory]
     
-    init(title: String, author: String, date: Date, prepTime: Int, cookTime: Int, servings: Int, expertise: expertiseEnum, calories: Int, isFavorite: Bool, ingredients: [RecipeIngredient], instructions: [RecipeInstruction], categories: [RecipeCategory]) {
+    init(title: String, author: String, date: Date, prepTime: Int, cookTime: Int, servings: Int, expertise: String, calories: Int, isFavorite: Bool, ingredients: [RecipeIngredient], instructions: [RecipeInstruction], categories: [RecipeCategory]) {
         self.title = title
         self.author = author
         self.date = date
@@ -70,11 +70,4 @@ final class RecipeCategory {
     init(categoryName: String) {
         self.categoryName = categoryName
     }
-}
-
-enum expertiseEnum: String, CaseIterable {
-    case beginner
-    case novice
-    case intermediate
-    case master
 }
