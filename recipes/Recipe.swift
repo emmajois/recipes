@@ -43,12 +43,13 @@ final class Recipe {
 final class RecipeIngredient {
     var ingredientName: String
     var measurement: String
-    var note: String
+    var note: String?
+    var recipe: Recipe
     
-    init(ingredientName: String, measurement: String, note: String) {
+    init(ingredientName: String, measurement: String, recipe: Recipe) {
         self.ingredientName = ingredientName
         self.measurement = measurement
-        self.note = note
+        self.recipe = recipe
     }
 }
 
@@ -56,16 +57,19 @@ final class RecipeIngredient {
 final class RecipeInstruction {
     var instructionDescription: String
     var order: Int
-    
-    init(instructionDescription: String, order: Int) {
+    var recipe: Recipe
+
+    init(instructionDescription: String, order: Int, recipe: Recipe) {
         self.instructionDescription = instructionDescription
         self.order = order
+        self.recipe = recipe
     }
 }
 
 @Model
 final class RecipeCategory {
     var categoryName: String
+    var recipe: Recipe?
     
     init(categoryName: String) {
         self.categoryName = categoryName

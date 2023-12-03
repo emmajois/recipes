@@ -149,23 +149,52 @@ struct RecipeView: View {
     struct AddSheetView: View {
         @Environment(\.dismiss) var dismiss
         @State var recipeTitle: String = ""
-        @State var ingredients: String = ""
-        @State var instructions: String = ""
+        @State var recipeAuthor: String = ""
+        @State var recipeExpertise: String = ""
+        @State var recipeDate: Date = Date()
+        @State var recipePrepTime = 5
+        @State var recipeCookTime: Int = 5
+        @State var recipeServings: Int = 1
+        @State var recipeCalories: Int = 1
+        @State var recipeIsFavorite: Bool = false
+        @State var ingredientName: String = ""
+        @State var ingredientMeasurement: String = ""
+        @State var ingredientNote: String = ""
+        @State var instructionDescription: String = ""
+        @State var category: String = ""
         
         var body: some View {
             NavigationStack {
+                
+                ///Form help:  https://blog.logrocket.com/building-forms-swiftui-comprehensive-guide/
+                
                 Form {
                     Section(header: Text("Recipe Information")) {
-                        TextField("Recipe Title", text: $recipeTitle)
-                        //all the rest of the metadata that will be added
+                        TextField("Title", text: $recipeTitle)
+                        TextField("Author", text: $recipeAuthor)
+                        DatePicker("Date", selection: $recipeDate, displayedComponents: .date)
+                        Stepper("Minute to prepare: \(recipePrepTime)", value: $recipePrepTime, in: 0...100, step: 5)
+                        Stepper("Minutes to cook: \(recipeCookTime) ", value: $recipeCookTime, in: 0...120, step: 5)
+                        Stepper("Servings: \(recipeServings)", value: $recipeServings, in: 0...50)
+                        Stepper("Calories per serving: \(recipeCalories)", value: $recipeCalories, in: 0...500, step: 5)
+                        Toggle(isOn: $recipeIsFavorite){
+                            Text("Favorite?")
+                        }
                     }
+                    //TODO: Make it so the form duplicates if they want to add an additional ingredient
                     Section(header: Text("Recipe Ingredients")) {
-                        TextField("Ingredients", text: $ingredients)
-                        //Rest that goes with the recipes
+                        TextField("Name", text: $ingredientName)
+                        TextField("Measurement", text: $ingredientMeasurement)
+                        TextField("Additional notes (optional): ", text: $ingredientNote)
                     }
+                    //TODO: Make the form duplicate if they have extra steps
                     Section(header: Text("Recipe Instructions")) {
-                        TextField("Instructions", text: $instructions)
-                        //Rest that will go with instructions
+                        TextField("Instructions", text: $instructionDescription)
+                        //order will have to be auto incremented for each new instruction
+                    }
+                    //TODO: Make it so multiple categories can be added
+                    Section(header: Text("Recipe Category")){
+                        TextField("Category", text: $category)
                     }
                 }
             }
