@@ -151,7 +151,7 @@ struct RecipeView: View {
         @State var recipePrepTime = 5
         @State var recipeCookTime: Int = 5
         @State var recipeServings: Int = 1
-        @State var recipeCalories: Int = 1
+        @State var recipeCalories: Int = 5
         @State var recipeIsFavorite: Bool = false
         @State var ingredientName: String = ""
         @State var ingredientMeasurement: String = ""
