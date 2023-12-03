@@ -65,10 +65,6 @@ struct RecipeView: View {
 //MARK: - Functions
     private func addItem() {
         // TODO: redo the new item logic
-//        withAnimation {
-//            let newItem = Item(title: "Some Item", ingredients: "Some stuff", instructions: "Do something")
-//            modelContext.insert(newItem)
-//        }
         showingAddRecipeSheet.toggle()
     }
 
@@ -196,6 +192,11 @@ struct RecipeView: View {
                     Section(header: Text("Recipe Category")){
                         TextField("Category", text: $category)
                     }
+                    Section {
+                        Button("Submit"){
+                            addRecipe()
+                        }
+                    }
                 }
             }
             //TODO: Figure out why the toolbar isn't showing up on the form
@@ -206,6 +207,9 @@ struct RecipeView: View {
                     }
                 }
             }
+        }
+        private func addRecipe() {
+            //TODO: Create the logic for adding the new recipe
         }
     }
 }
