@@ -198,12 +198,11 @@ struct RecipeView: View {
                         }
                     }
                 }
-            }
-            //TODO: Figure out why the toolbar isn't showing up on the form
-            .toolbar {
-                ToolbarItem{
-                    Button("", systemImage: "xmark.circle") {
-                        dismiss()
+                .toolbar {
+                    ToolbarItem{
+                        Button("", systemImage: "xmark.circle") {
+                            dismiss()
+                        }
                     }
                 }
             }
