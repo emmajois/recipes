@@ -144,6 +144,10 @@ struct RecipeView: View {
 // MARK: - Structs
     struct AddSheetView: View {
         @Environment(\.dismiss) var dismiss
+        
+        @State fileprivate var showingAddIngredientSheet = false
+        @State fileprivate var showingAddInstructionSheet = false
+        
         @State var recipeTitle: String = ""
         @State var recipeAuthor: String = ""
         @State var recipeExpertise: String = ""
@@ -153,10 +157,6 @@ struct RecipeView: View {
         @State var recipeServings: Int = 1
         @State var recipeCalories: Int = 5
         @State var recipeIsFavorite: Bool = false
-        @State var ingredientName: String = ""
-        @State var ingredientMeasurement: String = ""
-        @State var ingredientNote: String = ""
-        @State var instructionDescription: String = ""
         @State var category: String = ""
         
         var body: some View {
@@ -177,16 +177,21 @@ struct RecipeView: View {
                             Text("Favorite?")
                         }
                     }
-                    //TODO: Make it so the form duplicates if they want to add an additional ingredient
                     Section(header: Text("Recipe Ingredients")) {
-                        TextField("Name", text: $ingredientName)
-                        TextField("Measurement", text: $ingredientMeasurement)
-                        TextField("Additional notes (optional): ", text: $ingredientNote)
+                        Button(action: openIngredientModal) {
+                            Label("Add Ingredients", systemImage: "plus")
+                        }
+                        .sheet(isPresented: $showingAddIngredientSheet) {
+                            AddIngredientView()
+                        }
                     }
-                    //TODO: Make the form duplicate if they have extra steps
                     Section(header: Text("Recipe Instructions")) {
-                        TextField("Instructions", text: $instructionDescription)
-                        //order will have to be auto incremented for each new instruction
+                        Button(action: openInstructionModal) {
+                            Label("Add Instructions", systemImage: "plus")
+                        }
+                        .sheet(isPresented: $showingAddInstructionSheet) {
+                            AddInstructionView()
+                        }
                     }
                     //TODO: Make it so multiple categories can be added
                     Section(header: Text("Recipe Category")){
@@ -207,13 +212,73 @@ struct RecipeView: View {
                 }
             }
         }
+        
         private func addRecipe() {
             //TODO: Create the logic for adding the new recipe
         }
+        
+        private func openIngredientModal() {
+            showingAddIngredientSheet.toggle()
+        }
+        
+        private func openInstructionModal() {
+            showingAddInstructionSheet.toggle()
+        }
+    }
+    
+    struct AddIngredientView: View {
+        @Environment(\.dismiss) var dismiss
+        
+        @State var ingredientName: String = ""
+        @State var ingredientMeasurement: String = ""
+        @State var ingredientNote: String = ""
+        
+        var body: some View {
+            NavigationStack {
+                Form {
+                    Section(header: Text("Recipe Ingredients")) {
+                        //TODO: Make it so the form duplicates if they want to add an additional ingredient
+                        TextField("Name", text: $ingredientName)
+                        TextField("Measurement", text: $ingredientMeasurement)
+                        TextField("Additional notes (optional): ", text: $ingredientNote)
+                    }
+                }
+                .toolbar {
+                    ToolbarItem{
+                        Button("", systemImage: "xmark.circle") {
+                            dismiss()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    struct AddInstructionView: View {
+        @Environment(\.dismiss) var dismiss
+        
+        @State var instructionDescription: String = ""
+        
+        var body: some View {
+            NavigationStack {
+                Form {
+                    //TODO: Make the form duplicate if they have extra steps
+                    Section(header: Text("Recipe Instructions")) {
+                        TextField("Instructions", text: $instructionDescription)
+                        //order will have to be auto incremented for each new instruction
+                    }
+                }
+                .toolbar {
+                    ToolbarItem{
+                        Button("", systemImage: "xmark.circle") {
+                            dismiss()
+                        }
+                    }
+                }
+            }
+        }
     }
 }
-
-
 
 #Preview {
     RecipeView()

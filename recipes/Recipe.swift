@@ -19,11 +19,13 @@ final class Recipe {
     var expertise: String
     var calories: Int
     var isFavorite: Bool
-    var ingredients: [RecipeIngredient]
-    var instructions: [RecipeInstruction]
-    var categories: [RecipeCategory]
+    @Relationship(deleteRule: .cascade)
+    var ingredients: [RecipeIngredient]?
+    @Relationship(deleteRule: .cascade)
+    var instructions: [RecipeInstruction]?
+    var categories: [RecipeCategory]?
     
-    init(title: String, author: String, date: Date, prepTime: Int, cookTime: Int, servings: Int, expertise: String, calories: Int, isFavorite: Bool, ingredients: [RecipeIngredient], instructions: [RecipeInstruction], categories: [RecipeCategory]) {
+    init(title: String, author: String, date: Date, prepTime: Int, cookTime: Int, servings: Int, expertise: String, calories: Int, isFavorite: Bool) {
         self.title = title
         self.author = author
         self.date = date
@@ -33,9 +35,6 @@ final class Recipe {
         self.expertise = expertise
         self.calories = calories
         self.isFavorite = isFavorite
-        self.ingredients = ingredients
-        self.instructions = instructions
-        self.categories = categories
     }
 }
 
@@ -44,7 +43,7 @@ final class RecipeIngredient {
     var ingredientName: String
     var measurement: String
     var note: String?
-    var recipe: Recipe
+    var recipe: Recipe?
     
     init(ingredientName: String, measurement: String, recipe: Recipe) {
         self.ingredientName = ingredientName
@@ -57,7 +56,7 @@ final class RecipeIngredient {
 final class RecipeInstruction {
     var instructionDescription: String
     var order: Int
-    var recipe: Recipe
+    var recipe: Recipe?
 
     init(instructionDescription: String, order: Int, recipe: Recipe) {
         self.instructionDescription = instructionDescription
