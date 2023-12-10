@@ -133,9 +133,25 @@ struct RecipeView: View {
                                     Text("\(ingredient.ingredientName): \(ingredient.measurement)")
                                 }
                             } else {
-                                Text("").padding()
+                                Text("No ingredients!").padding()
                             }
                             //instructions
+                            Text("Instructions")
+                                .font(.subheadline)
+                            Button(action: openInstructionModal) {
+                                Label("Add Instructions", systemImage: "plus")
+                            }
+                            .buttonStyle(.bordered)
+                            .sheet(isPresented: $showingAddInstructionSheet) {
+                                AddInstructionView(newRecipe: recipe)
+                            }
+                            if let instructions = recipe.instructions {
+                                ForEach(instructions) { instruction in
+                                    Text("\(instruction.order): \(instruction.instructionDescription)")
+                                }
+                            } else {
+                                Text("No instructions!").padding()
+                            }
 
                         }
                     }
@@ -200,26 +216,6 @@ struct RecipeView: View {
                             Text("Favorite?")
                         }
                     }
-//                    Section(header: Text("Recipe Ingredients")) {
-//                        Button(action: openIngredientModal) {
-//                            Label("Add Ingredients", systemImage: "plus")
-//                        }
-//                        .sheet(isPresented: $showingAddIngredientSheet) {
-//                            AddIngredientView()
-//                        }
-//                        ForEach(masterIngredientList) { ingredient in
-//                            Text("\(ingredient.ingredientName): \(ingredient.measurement)")
-//                        }
-//                    }
-//                    Section(header: Text("Recipe Instructions")) {
-//                        Button(action: openInstructionModal) {
-//                            Label("Add Instructions", systemImage: "plus")
-//                        }
-//                        .sheet(isPresented: $showingAddInstructionSheet) {
-//                            AddInstructionView()
-//                        }
-//                    }
-                    
                     //TODO: Make it so multiple categories can be added
                     //picker
 //                    Section(header: Text("Recipe Category")){
@@ -262,15 +258,12 @@ struct RecipeView: View {
     
     struct AddIngredientView : View {
         @Environment(\.dismiss) var dismiss
-        @Environment(\.modelContext) private var modelContext
 
         @State var ingredientName: String = ""
         @State var ingredientMeasurement: String = ""
         @State var ingredientNote: String = ""
-        @State var ingredientList: [RecipeIngredient] = []
         
         var newRecipe: Recipe
-        var newNote = ""
       
         var body: some View {
             NavigationStack {
@@ -287,13 +280,15 @@ struct RecipeView: View {
                     }
                 }
                 List {
-                    ForEach(ingredientList) { ingredient in
-                        Text(ingredient.ingredientName)
-                        Text(ingredient.measurement)
-                        if let note = ingredient.note {
-                            Text(note).padding()
-                        } else {
-                            Text("").padding()
+                    if let ingredients = newRecipe.ingredients {
+                        ForEach(ingredients) { ingredient in
+                            Text(ingredient.ingredientName)
+                            Text(ingredient.measurement)
+                            if let note = ingredient.note {
+                                Text(note).padding()
+                            } else {
+                                Text("").padding()
+                            }
                         }
                     }
                 }
@@ -320,8 +315,7 @@ struct RecipeView: View {
             ingredientNote = ""
             
             newRecipe.ingredients?.append(newIngredient)
-           
-            dismiss()
+
         }
     }
     
@@ -329,8 +323,9 @@ struct RecipeView: View {
         @Environment(\.dismiss) var dismiss
         
         @State var instructionDescription: String = ""
-        @State var instructionList: [RecipeInstruction] = []
         @State var order = 1
+        
+        var newRecipe: Recipe
         
         var body: some View {
             NavigationStack {
@@ -345,9 +340,11 @@ struct RecipeView: View {
                     }
                 }
                 List {
-                    ForEach (instructionList) { instruction in
-                        Text(String(instruction.order))
-                        Text(instruction.instructionDescription)
+                    if let instructions = newRecipe.instructions {
+                        ForEach (instructions) { instruction in
+                            Text(String(instruction.order))
+                            Text(instruction.instructionDescription)
+                        }
                     }
                 }
                 .toolbar {
@@ -361,12 +358,15 @@ struct RecipeView: View {
         }
         
         private func addInstruction() {
-            instructionList.append(RecipeInstruction(
+            let newInstruction = RecipeInstruction(
                 instructionDescription: instructionDescription,
                 order: order,
                 recipe: nil
-            ))
+            )
+            
             instructionDescription = ""
+            
+            newRecipe.instructions?.append(newInstruction)
             order+=1
         }
     }
