@@ -9,10 +9,15 @@ import SwiftUI
 import SwiftData
 import MarkdownUI
 
+//MARK: - Global Vars
+
 struct RecipeView: View {
     @Environment(\.modelContext) private var modelContext
+    
     @Query private var recipes: [Recipe]
     @State fileprivate var showingAddRecipeSheet = false
+    @State fileprivate var showingAddIngredientSheet = false
+    @State fileprivate var showingAddInstructionSheet = false
 
     var body: some View {
         NavigationSplitView {
@@ -63,9 +68,16 @@ struct RecipeView: View {
     }
     
 //MARK: - Functions
-    private func addItem() {
-        // TODO: redo the new item logic
+    private func openAddRecipeSheet() {
         showingAddRecipeSheet.toggle()
+    }
+    
+    private func openIngredientModal() {
+        showingAddIngredientSheet.toggle()
+    }
+    
+    private func openInstructionModal() {
+        showingAddInstructionSheet.toggle()
     }
 
     private func deleteItems(offsets: IndexSet) {
@@ -101,18 +113,30 @@ struct RecipeView: View {
                 NavigationLink {
                     ScrollView {
                         VStack {
-                            Markdown {
-                                recipe.title
-                            }
+                            //title
+                            Text(recipe.title)
+                                .font(.title)
                             .padding()
-                            Markdown {
-                                //item.ingredients
+                            //metadata
+                            //ingredients
+                            Text("Ingredients")
+                                .font(.subheadline)
+                            Button(action: openIngredientModal) {
+                                Label("Add Ingredients", systemImage: "plus")
                             }
-                            .padding()
-                            Markdown {
-                                //item.instructions
+                            .buttonStyle(.bordered)
+                            .sheet(isPresented: $showingAddIngredientSheet) {
+                                AddIngredientView(newRecipe: recipe)
                             }
-                            .padding()
+                            if let ingredients = recipe.ingredients {
+                                ForEach(ingredients) { ingredient in
+                                    Text("\(ingredient.ingredientName): \(ingredient.measurement)")
+                                }
+                            } else {
+                                Text("").padding()
+                            }
+                            //instructions
+
                         }
                     }
                 } label: {
@@ -131,8 +155,8 @@ struct RecipeView: View {
                 }
             }
             ToolbarItem {
-                Button(action: addItem) {
-                    Label("Add Item", systemImage: "plus")
+                Button(action: openAddRecipeSheet) {
+                    Label("Add Recipe", systemImage: "plus")
                 }
                 .sheet(isPresented: $showingAddRecipeSheet) {
                     AddSheetView()
@@ -144,17 +168,15 @@ struct RecipeView: View {
 // MARK: - Structs
     struct AddSheetView: View {
         @Environment(\.dismiss) var dismiss
-        
-        @State fileprivate var showingAddIngredientSheet = false
-        @State fileprivate var showingAddInstructionSheet = false
+        @Environment(\.modelContext) private var modelContext
         
         @State var recipeTitle: String = ""
         @State var recipeAuthor: String = ""
-        @State var recipeExpertise: String = ""
         @State var recipeDate: Date = Date()
         @State var recipePrepTime = 5
         @State var recipeCookTime: Int = 5
         @State var recipeServings: Int = 1
+        @State var recipeExpertise: Int = 1
         @State var recipeCalories: Int = 5
         @State var recipeIsFavorite: Bool = false
         @State var category: String = ""
@@ -169,7 +191,8 @@ struct RecipeView: View {
                         TextField("Title", text: $recipeTitle)
                         TextField("Author", text: $recipeAuthor)
                         DatePicker("Date", selection: $recipeDate, displayedComponents: .date)
-                        Stepper("Minute to prepare: \(recipePrepTime)", value: $recipePrepTime, in: 0...100, step: 5)
+                        Stepper("Expertise Required: \(recipeExpertise)", value: $recipeExpertise, in: 0...10, step: 1)
+                        Stepper("Minutes to prepare: \(recipePrepTime)", value: $recipePrepTime, in: 0...100, step: 5)
                         Stepper("Minutes to cook: \(recipeCookTime) ", value: $recipeCookTime, in: 0...120, step: 5)
                         Stepper("Servings: \(recipeServings)", value: $recipeServings, in: 0...50)
                         Stepper("Calories per serving: \(recipeCalories)", value: $recipeCalories, in: 0...500, step: 5)
@@ -177,27 +200,31 @@ struct RecipeView: View {
                             Text("Favorite?")
                         }
                     }
-                    Section(header: Text("Recipe Ingredients")) {
-                        Button(action: openIngredientModal) {
-                            Label("Add Ingredients", systemImage: "plus")
-                        }
-                        .sheet(isPresented: $showingAddIngredientSheet) {
-                            AddIngredientView()
-                        }
-                    }
-                    Section(header: Text("Recipe Instructions")) {
-                        Button(action: openInstructionModal) {
-                            Label("Add Instructions", systemImage: "plus")
-                        }
-                        .sheet(isPresented: $showingAddInstructionSheet) {
-                            AddInstructionView()
-                        }
-                    }
+//                    Section(header: Text("Recipe Ingredients")) {
+//                        Button(action: openIngredientModal) {
+//                            Label("Add Ingredients", systemImage: "plus")
+//                        }
+//                        .sheet(isPresented: $showingAddIngredientSheet) {
+//                            AddIngredientView()
+//                        }
+//                        ForEach(masterIngredientList) { ingredient in
+//                            Text("\(ingredient.ingredientName): \(ingredient.measurement)")
+//                        }
+//                    }
+//                    Section(header: Text("Recipe Instructions")) {
+//                        Button(action: openInstructionModal) {
+//                            Label("Add Instructions", systemImage: "plus")
+//                        }
+//                        .sheet(isPresented: $showingAddInstructionSheet) {
+//                            AddInstructionView()
+//                        }
+//                    }
+                    
                     //TODO: Make it so multiple categories can be added
                     //picker
-                    Section(header: Text("Recipe Category")){
-                        TextField("Category", text: $category)
-                    }
+//                    Section(header: Text("Recipe Category")){
+//                        TextField("Category", text: $category)
+//                    }
                     Section {
                         Button("Submit"){
                             addRecipe()
@@ -215,28 +242,36 @@ struct RecipeView: View {
         }
         
         private func addRecipe() {
-            //TODO: Create the logic for adding the new recipe
-        }
-        
-        private func openIngredientModal() {
-            showingAddIngredientSheet.toggle()
-        }
-        
-        private func openInstructionModal() {
-            showingAddInstructionSheet.toggle()
+            withAnimation{
+                let newRecipe = Recipe(
+                    title: recipeTitle,
+                    author: recipeAuthor,
+                    date: recipeDate,
+                    prepTime: recipePrepTime,
+                    cookTime: recipeCookTime,
+                    servings: recipeServings,
+                    expertise: recipeExpertise,
+                    calories: recipeCalories,
+                    isFavorite: recipeIsFavorite
+                )
+                modelContext.insert(newRecipe)
+                dismiss()
+            }
         }
     }
     
-    struct AddIngredientView: View {
+    struct AddIngredientView : View {
         @Environment(\.dismiss) var dismiss
-        
+        @Environment(\.modelContext) private var modelContext
+
         @State var ingredientName: String = ""
         @State var ingredientMeasurement: String = ""
         @State var ingredientNote: String = ""
         @State var ingredientList: [RecipeIngredient] = []
         
+        var newRecipe: Recipe
         var newNote = ""
-        
+      
         var body: some View {
             NavigationStack {
                 Form {
@@ -273,16 +308,20 @@ struct RecipeView: View {
         }
         
         private func addIngredient() {
-            ingredientList.append(RecipeIngredient(
+           let newIngredient = RecipeIngredient(
                 ingredientName: ingredientName,
                 measurement: ingredientMeasurement,
                 note: ingredientNote,
-                recipe: nil
-            ))
+                recipe: newRecipe
+            )
             
             ingredientName = ""
             ingredientMeasurement = ""
             ingredientNote = ""
+            
+            newRecipe.ingredients?.append(newIngredient)
+           
+            dismiss()
         }
     }
     
@@ -327,7 +366,6 @@ struct RecipeView: View {
                 order: order,
                 recipe: nil
             ))
-            
             instructionDescription = ""
             order+=1
         }

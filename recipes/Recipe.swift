@@ -16,7 +16,7 @@ final class Recipe {
     var prepTime: Int
     var cookTime: Int
     var servings: Int
-    var expertise: String
+    var expertise: Int
     var calories: Int
     var isFavorite: Bool
     @Relationship(deleteRule: .cascade)
@@ -25,7 +25,7 @@ final class Recipe {
     var instructions: [RecipeInstruction]?
     var categories: [RecipeCategory]?
     
-    init(title: String, author: String, date: Date, prepTime: Int, cookTime: Int, servings: Int, expertise: String, calories: Int, isFavorite: Bool) {
+    init(title: String, author: String, date: Date, prepTime: Int, cookTime: Int, servings: Int, expertise: Int, calories: Int, isFavorite: Bool) {
         self.title = title
         self.author = author
         self.date = date
