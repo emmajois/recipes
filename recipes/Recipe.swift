@@ -45,9 +45,10 @@ final class RecipeIngredient {
     var note: String?
     var recipe: Recipe?
     
-    init(ingredientName: String, measurement: String, recipe: Recipe) {
+    init(ingredientName: String, measurement: String, note:  String?, recipe: Recipe?) {
         self.ingredientName = ingredientName
         self.measurement = measurement
+        self.note = note
         self.recipe = recipe
     }
 }
@@ -58,7 +59,7 @@ final class RecipeInstruction {
     var order: Int
     var recipe: Recipe?
 
-    init(instructionDescription: String, order: Int, recipe: Recipe) {
+    init(instructionDescription: String, order: Int, recipe: Recipe?) {
         self.instructionDescription = instructionDescription
         self.order = order
         self.recipe = recipe

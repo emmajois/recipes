@@ -38,12 +38,12 @@ struct RecipeView: View {
                 // all the categories
                 Section(header: Text("Categories")) {
                     NavigationLink {
-                        Text("breakfast")
+                        Text("Breakfast")
                     } label: {
                         Text("Breakfast")
                     }
                     NavigationLink {
-                        Text("lunch")
+                        Text("Lunch")
                     } label: {
                         Text("Lunch")
                     }
@@ -194,6 +194,7 @@ struct RecipeView: View {
                         }
                     }
                     //TODO: Make it so multiple categories can be added
+                    //picker
                     Section(header: Text("Recipe Category")){
                         TextField("Category", text: $category)
                     }
@@ -232,15 +233,33 @@ struct RecipeView: View {
         @State var ingredientName: String = ""
         @State var ingredientMeasurement: String = ""
         @State var ingredientNote: String = ""
+        @State var ingredientList: [RecipeIngredient] = []
+        
+        var newNote = ""
         
         var body: some View {
             NavigationStack {
                 Form {
                     Section(header: Text("Recipe Ingredients")) {
-                        //TODO: Make it so the form duplicates if they want to add an additional ingredient
-                        TextField("Name", text: $ingredientName)
-                        TextField("Measurement", text: $ingredientMeasurement)
-                        TextField("Additional notes (optional): ", text: $ingredientNote)
+                        TextField("Name", text: $ingredientName, axis: .vertical)
+                        TextField("Measurement", text: $ingredientMeasurement, axis: .vertical)
+                        TextField("Additional notes (optional): ", text: $ingredientNote, axis: .vertical)
+                        Section {
+                            Button("Add"){
+                                addIngredient()
+                            }
+                        }
+                    }
+                }
+                List {
+                    ForEach(ingredientList) { ingredient in
+                        Text(ingredient.ingredientName)
+                        Text(ingredient.measurement)
+                        if let note = ingredient.note {
+                            Text(note).padding()
+                        } else {
+                            Text("").padding()
+                        }
                     }
                 }
                 .toolbar {
@@ -252,20 +271,44 @@ struct RecipeView: View {
                 }
             }
         }
+        
+        private func addIngredient() {
+            ingredientList.append(RecipeIngredient(
+                ingredientName: ingredientName,
+                measurement: ingredientMeasurement,
+                note: ingredientNote,
+                recipe: nil
+            ))
+            
+            ingredientName = ""
+            ingredientMeasurement = ""
+            ingredientNote = ""
+        }
     }
     
     struct AddInstructionView: View {
         @Environment(\.dismiss) var dismiss
         
         @State var instructionDescription: String = ""
+        @State var instructionList: [RecipeInstruction] = []
+        @State var order = 1
         
         var body: some View {
             NavigationStack {
                 Form {
-                    //TODO: Make the form duplicate if they have extra steps
                     Section(header: Text("Recipe Instructions")) {
-                        TextField("Instructions", text: $instructionDescription)
-                        //order will have to be auto incremented for each new instruction
+                        TextField("Instructions", text: $instructionDescription, axis: .vertical)
+                    }
+                    Section {
+                        Button("Add"){
+                            addInstruction()
+                        }
+                    }
+                }
+                List {
+                    ForEach (instructionList) { instruction in
+                        Text(String(instruction.order))
+                        Text(instruction.instructionDescription)
                     }
                 }
                 .toolbar {
@@ -276,6 +319,17 @@ struct RecipeView: View {
                     }
                 }
             }
+        }
+        
+        private func addInstruction() {
+            instructionList.append(RecipeInstruction(
+                instructionDescription: instructionDescription,
+                order: order,
+                recipe: nil
+            ))
+            
+            instructionDescription = ""
+            order+=1
         }
     }
 }
