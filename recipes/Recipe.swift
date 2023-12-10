@@ -5,6 +5,8 @@
 //  Created by Emma Swalberg on 11/21/23.
 //
 
+/// The video helped with a lot of the model creation for one to many relationships https://www.youtube.com/watch?v=dAMFgq4tDPM
+
 import Foundation
 import SwiftData
 

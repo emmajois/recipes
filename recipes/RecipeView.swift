@@ -119,6 +119,7 @@ struct RecipeView: View {
                             .padding()
                             //metadata
                             //ingredients
+                            //TODO: - Order the lists both inside and outside
                             Text("Ingredients")
                                 .font(.subheadline)
                             Button(action: openIngredientModal) {
@@ -136,6 +137,7 @@ struct RecipeView: View {
                                 Text("No ingredients!").padding()
                             }
                             //instructions
+                            //TODO: - Order the lists both inside and outside
                             Text("Instructions")
                                 .font(.subheadline)
                             Button(action: openInstructionModal) {
@@ -323,7 +325,6 @@ struct RecipeView: View {
         @Environment(\.dismiss) var dismiss
         
         @State var instructionDescription: String = ""
-        @State var order = 1
         
         var newRecipe: Recipe
         
@@ -358,16 +359,26 @@ struct RecipeView: View {
         }
         
         private func addInstruction() {
+            var order: Int {
+                if let instructions = newRecipe.instructions {
+                    if instructions.count == 0 {
+                        return 1
+                    } else {
+                        return instructions.count + 1
+                    }
+                } else {
+                    return 0
+                }
+            }
+            
             let newInstruction = RecipeInstruction(
-                instructionDescription: instructionDescription,
-                order: order,
-                recipe: nil
-            )
-            
-            instructionDescription = ""
-            
-            newRecipe.instructions?.append(newInstruction)
-            order+=1
+                    instructionDescription: instructionDescription,
+                    order: order,
+                    recipe: newRecipe
+                )
+                newRecipe.instructions?.append(newInstruction)
+                
+                instructionDescription = ""
         }
     }
 }
