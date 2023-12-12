@@ -30,6 +30,12 @@ class ViewModel {
         fetchData()
     }
     
+    func deleteRecipe(_ recipe: Recipe) {
+        modelContext.delete(recipe)
+        
+        fetchData()
+    }
+    
     //MARK: - Private Helpers
     private func fetchData() {
         fetchRecipes()

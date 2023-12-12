@@ -88,13 +88,13 @@ struct RecipeView: View {
         showingAddInstructionSheet.toggle()
     }
 
-//    private func deleteItems(offsets: IndexSet) {
-//        withAnimation {
-//            for index in offsets {
-//                modelContext.delete(recipes[index])
-//            }
-//        }
-//    }
+    private func deleteRecipes(offsets: IndexSet) {
+        withAnimation {
+            for index in offsets {
+                viewModel.deleteRecipe(viewModel.recipes[index])
+            }
+        }
+    }
     
     private func initializeRecipes() {
         withAnimation {
@@ -169,7 +169,7 @@ struct RecipeView: View {
                     Text(recipe.title)
                 }
             }
-            //.onDelete(perform: deleteItems)
+            .onDelete(perform: deleteRecipes)
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
