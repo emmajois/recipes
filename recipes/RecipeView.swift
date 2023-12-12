@@ -13,10 +13,10 @@ import MarkdownUI
 
 struct RecipeView: View {
     //MARK: - Properties
-    //@Environment(\.modelContext) private var modelContext
-    @State fileprivate var viewModel: ViewModel
+    @State private var viewModel: ViewModel
+    @State private var hasError = false
+    @State private var errorMessage = ""
     
-    //@Query private var recipes: [Recipe]
     @State fileprivate var showingAddRecipeSheet = false
     @State fileprivate var showingAddIngredientSheet = false
     @State fileprivate var showingAddInstructionSheet = false
@@ -50,20 +50,12 @@ struct RecipeView: View {
                 }
                 // all the categories
                 Section(header: Text("Categories")) {
-                    NavigationLink {
-                        Text("Breakfast")
-                    } label: {
-                        Text("Breakfast")
-                    }
-                    NavigationLink {
-                        Text("Lunch")
-                    } label: {
-                        Text("Lunch")
-                    }
-                    NavigationLink {
-                        Text("Dinner")
-                    } label: {
-                        Text("Dinner")
+                    ForEach(viewModel.categories) { category in
+                        NavigationLink {
+                            Text(category.categoryName)
+                        } label: {
+                            Text(category.categoryName)
+                        }
                     }
                 }
             }
@@ -72,6 +64,24 @@ struct RecipeView: View {
 
         } detail: {
             Text("Select an item")
+        }
+        .alert(isPresented: $hasError) {
+            Alert(
+                title: Text("Unable to Reset Database"),
+                message: Text(errorMessage)
+            )
+        }
+        .task {
+            if viewModel.recipes.isEmpty {
+                withAnimation {
+                    do {
+                        try viewModel.replaceAllRecipes(emmaSampleRecipes, baseCategories, sampleAssociations)
+                    } catch {
+                        errorMessage = error.localizedDescription
+                        hasError = true
+                    }
+                }
+            }
         }
     }
     
@@ -93,24 +103,6 @@ struct RecipeView: View {
             for index in offsets {
                 viewModel.deleteRecipe(viewModel.recipes[index])
             }
-        }
-    }
-    
-    private func initializeRecipes() {
-        withAnimation {
-            // TODO: Make this automatically load them in with correct fields
-            //        for recipe in sampleRecipes {
-            //            modelContext.insert(recipe)
-            //        }
-//            if let recipes = loadJson(filename: "SampleData") {
-//                for recipe in recipes {
-//                    modelContext.insert(Recipe(
-//                        title: recipe.title
-//                        ingredients: recipe.ingredients,
-//                        instructions: recipe.instructions
-//                    ))
-//                }
-//            }
         }
     }
     
@@ -137,8 +129,8 @@ struct RecipeView: View {
                             .sheet(isPresented: $showingAddIngredientSheet) {
                                 AddIngredientView(newRecipe: recipe)
                             }
-                            if let ingredients = recipe.ingredients {
-                                ForEach(ingredients) { ingredient in
+                            if recipe.ingredients.count > 0 {
+                                ForEach(recipe.ingredients) { ingredient in
                                     Text("\(ingredient.ingredientName): \(ingredient.measurement)")
                                 }
                             } else {
@@ -155,8 +147,8 @@ struct RecipeView: View {
                             .sheet(isPresented: $showingAddInstructionSheet) {
                                 AddInstructionView(newRecipe: recipe)
                             }
-                            if let instructions = recipe.instructions {
-                                ForEach(instructions) { instruction in
+                            if recipe.instructions.count > 0 {
+                                ForEach(recipe.instructions) { instruction in
                                     Text("\(instruction.order): \(instruction.instructionDescription)")
                                 }
                             } else {
@@ -174,11 +166,6 @@ struct RecipeView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 EditButton()
-            }
-            ToolbarItem {
-                Button(action: initializeRecipes){
-                    Label("Initialize", systemImage: "folder.badge.plus")
-                }
             }
             ToolbarItem {
                 Button(action: openAddRecipeSheet) {
@@ -260,6 +247,8 @@ struct RecipeView: View {
                     expertise: recipeExpertise,
                     calories: recipeCalories,
                     isFavorite: recipeIsFavorite,
+                    ingredients: [],
+                    instructions: [],
                     categories: []
                 )
                 sheetViewModel.addRecipe(newRecipe)
@@ -293,15 +282,13 @@ struct RecipeView: View {
                     }
                 }
                 List {
-                    if let ingredients = newRecipe.ingredients {
-                        ForEach(ingredients) { ingredient in
-                            Text(ingredient.ingredientName)
-                            Text(ingredient.measurement)
-                            if let note = ingredient.note {
-                                Text(note).padding()
-                            } else {
-                                Text("").padding()
-                            }
+                    ForEach(newRecipe.ingredients) { ingredient in
+                        Text(ingredient.ingredientName)
+                        Text(ingredient.measurement)
+                        if let note = ingredient.note {
+                            Text(note).padding()
+                        } else {
+                            Text("").padding()
                         }
                     }
                 }
@@ -326,7 +313,7 @@ struct RecipeView: View {
             ingredientMeasurement = ""
             ingredientNote = ""
             
-            newRecipe.ingredients?.append(newIngredient)
+            newRecipe.ingredients.append(newIngredient)
 
         }
     }
@@ -351,11 +338,9 @@ struct RecipeView: View {
                     }
                 }
                 List {
-                    if let instructions = newRecipe.instructions {
-                        ForEach (instructions) { instruction in
-                            Text(String(instruction.order))
-                            Text(instruction.instructionDescription)
-                        }
+                    ForEach (newRecipe.instructions) { instruction in
+                        Text(String(instruction.order))
+                        Text(instruction.instructionDescription)
                     }
                 }
                 .toolbar {
@@ -370,22 +355,18 @@ struct RecipeView: View {
         
         private func addInstruction() {
             var order: Int {
-                if let instructions = newRecipe.instructions {
-                    if instructions.count == 0 {
+                if newRecipe.instructions.count == 0 {
                         return 1
                     } else {
-                        return instructions.count + 1
+                        return newRecipe.instructions.count + 1
                     }
-                } else {
-                    return 0
                 }
-            }
             
             let newInstruction = RecipeInstruction(
                     instructionDescription: instructionDescription,
                     order: order
                 )
-                newRecipe.instructions?.append(newInstruction)
+                newRecipe.instructions.append(newInstruction)
                 
                 instructionDescription = ""
         }

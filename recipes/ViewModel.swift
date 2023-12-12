@@ -22,6 +22,7 @@ class ViewModel {
     //MARK: - Model Access
     private(set) var recipes: [Recipe] = []
     private(set) var filteredRecipes: [Recipe] = []
+    private(set) var categories: [RecipeCategory] = []
     
     //MARK: - User intents
     func addRecipe(_ recipe: Recipe) {
@@ -36,10 +37,45 @@ class ViewModel {
         fetchData()
     }
     
+    func replaceAllRecipes(
+        _ recipes: [Recipe],
+        _ baseCategories: [RecipeCategory],
+        _ associations: [(String, String)]
+    ) throws {
+        do {
+            try modelContext.delete(model: Recipe.self)
+            try modelContext.delete(model: RecipeCategory.self)
+        } catch {
+            throw error
+        }
+        
+        var recipeTable: [String : Recipe] = [:]
+        var categoryTable: [String : RecipeCategory] = [:]
+        
+        recipes.forEach { recipe in
+            recipeTable[recipe.title] = recipe
+            modelContext.insert(recipe)
+        }
+        
+        baseCategories.forEach { category in
+            categoryTable[category.categoryName] = category
+            modelContext.insert(category)
+        }
+        
+        associations.forEach { (recipe, category) in
+            if let recipeItem = recipeTable[recipe], let categoryItem = categoryTable[category] {
+                recipeItem.categories.append(categoryItem)
+            }
+        }
+        
+        fetchData()
+    }
+    
     //MARK: - Private Helpers
     private func fetchData() {
         fetchRecipes()
         fetchFilteredRecipes()
+        fetchCategories()
     }
     
     private func fetchFilteredRecipes() {
@@ -62,6 +98,16 @@ class ViewModel {
             recipes = try modelContext.fetch(descriptor)
         } catch {
             print("Failed to load recipes")
+        }
+    }
+    
+    private func fetchCategories() {
+        do {
+            let descriptor = FetchDescriptor<RecipeCategory>(sortBy: [SortDescriptor(\.categoryName)])
+            
+            categories = try modelContext.fetch(descriptor)
+        } catch {
+            print("Failed to load categories")
         }
     }
 }
