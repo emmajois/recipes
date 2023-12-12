@@ -20,6 +20,7 @@
 		26BA9FB62B1BEE5C006BBA34 /* RecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BA9FB52B1BEE5C006BBA34 /* RecipeView.swift */; };
 		26CFECDF2B15A5E6007CA99C /* SampleRecipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26CFECDE2B15A5E6007CA99C /* SampleRecipes.swift */; };
 		26EB3E1A2B280435002F08F7 /* EmmasRecipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EB3E192B280435002F08F7 /* EmmasRecipes.swift */; };
+		26EC639F2B28C14B00C0C1F5 /* AddSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EC639E2B28C14B00C0C1F5 /* AddSheetView.swift */; };
 		26F4E7872B27A0F6004E889B /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F4E7862B27A0F6004E889B /* ViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +57,7 @@
 		26BA9FB52B1BEE5C006BBA34 /* RecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeView.swift; sourceTree = "<group>"; };
 		26CFECDE2B15A5E6007CA99C /* SampleRecipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleRecipes.swift; sourceTree = "<group>"; };
 		26EB3E192B280435002F08F7 /* EmmasRecipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmmasRecipes.swift; sourceTree = "<group>"; };
+		26EC639E2B28C14B00C0C1F5 /* AddSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSheetView.swift; sourceTree = "<group>"; };
 		26F4E7862B27A0F6004E889B /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -175,6 +177,7 @@
 			children = (
 				26B8986D2B0DAA930011142B /* recipesApp.swift */,
 				26BA9FB52B1BEE5C006BBA34 /* RecipeView.swift */,
+				26EC639E2B28C14B00C0C1F5 /* AddSheetView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -318,6 +321,7 @@
 			files = (
 				26B898722B0DAA930011142B /* Item.swift in Sources */,
 				26B8986E2B0DAA930011142B /* recipesApp.swift in Sources */,
+				26EC639F2B28C14B00C0C1F5 /* AddSheetView.swift in Sources */,
 				26CFECDF2B15A5E6007CA99C /* SampleRecipes.swift in Sources */,
 				263272732B1AF1E900D08CFE /* Recipe.swift in Sources */,
 				26F4E7872B27A0F6004E889B /* ViewModel.swift in Sources */,

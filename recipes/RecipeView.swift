@@ -28,7 +28,6 @@ struct RecipeView: View {
     
     var body: some View {
         NavigationSplitView {
-            //add in a task for populating the sample data (37 minutes in the zoom video)
             List {
                 // a section for browse, search, favorites
                 Section(header: Text("Actions")) {
@@ -83,6 +82,7 @@ struct RecipeView: View {
                 }
             }
         }
+        .environment(viewModel)
     }
     
 //MARK: - Functions
@@ -118,6 +118,10 @@ struct RecipeView: View {
                                 .font(.title)
                             .padding()
                             //metadata
+                            //categories
+                            ForEach(recipe.categories) {category in
+                                Text(category.categoryName)
+                            }
                             //ingredients
                             //TODO: - Order the lists both inside and outside
                             Text("Ingredients")
@@ -148,7 +152,7 @@ struct RecipeView: View {
                                 AddInstructionView(newRecipe: recipe)
                             }
                             if recipe.instructions.count > 0 {
-                                ForEach(recipe.instructions) { instruction in
+                                ForEach(recipe.instructions.sorted(by: { $0.order < $1.order })) { instruction in
                                     Text("\(instruction.order): \(instruction.instructionDescription)")
                                 }
                             } else {
@@ -172,92 +176,13 @@ struct RecipeView: View {
                     Label("Add Recipe", systemImage: "plus")
                 }
                 .sheet(isPresented: $showingAddRecipeSheet) {
-                    AddSheetView(sheetViewModel: viewModel)
+                    AddSheetView()
                 }
             }
         }
     }
 
-// MARK: - Structs
-    struct AddSheetView: View {
-        @Environment(\.dismiss) var dismiss
-        
-        @State var recipeTitle: String = ""
-        @State var recipeAuthor: String = ""
-        @State var recipeDate: Date = Date()
-        @State var recipePrepTime = 5
-        @State var recipeCookTime: Int = 5
-        @State var recipeServings: Int = 1
-        @State var recipeExpertise: Int = 1
-        @State var recipeCalories: Int = 5
-        @State var recipeIsFavorite: Bool = false
-        @State var category: String = ""
-        @State var sheetViewModel: ViewModel
-        
-        var body: some View {
-            NavigationStack {
-                
-                ///Form help:  https://blog.logrocket.com/building-forms-swiftui-comprehensive-guide/
-                
-                Form {
-                    Section(header: Text("Recipe Information")) {
-                        TextField("Title", text: $recipeTitle)
-                        TextField("Author", text: $recipeAuthor)
-                        DatePicker("Date", selection: $recipeDate, displayedComponents: .date)
-                        Stepper("Expertise Required: \(recipeExpertise)", value: $recipeExpertise, in: 0...10, step: 1)
-                        Stepper("Minutes to prepare: \(recipePrepTime)", value: $recipePrepTime, in: 0...100, step: 5)
-                        Stepper("Minutes to cook: \(recipeCookTime) ", value: $recipeCookTime, in: 0...120, step: 5)
-                        Stepper("Servings: \(recipeServings)", value: $recipeServings, in: 0...50)
-                        Stepper("Calories per serving: \(recipeCalories)", value: $recipeCalories, in: 0...500, step: 5)
-                        Toggle(isOn: $recipeIsFavorite){
-                            Text("Favorite?")
-                        }
-                    }
-                    //TODO: Make it so multiple categories can be added
-                    //next up! Left off the video at 22 minutes, will probably pick up there next.
-                    //picker
-//                    Section(header: Text("Recipe Category")){
-//                        TextField("Category", text: $category)
-//                    }
-                    Section {
-                        Button("Submit"){
-                            addRecipe()
-                        }
-                    }
-                }
-                .toolbar {
-                    ToolbarItem{
-                        Button("", systemImage: "xmark.circle") {
-                            dismiss()
-                        }
-                    }
-                }
-            }
-        }
-        
-        private func addRecipe() {
-            withAnimation{
-                let newRecipe = Recipe(
-                    title: recipeTitle,
-                    author: recipeAuthor,
-                    date: recipeDate,
-                    prepTime: recipePrepTime,
-                    cookTime: recipeCookTime,
-                    servings: recipeServings,
-                    expertise: recipeExpertise,
-                    calories: recipeCalories,
-                    isFavorite: recipeIsFavorite,
-                    ingredients: [],
-                    instructions: [],
-                    categories: []
-                )
-                sheetViewModel.addRecipe(newRecipe)
-                
-                dismiss()
-            }
-        }
-    }
-    
+// MARK: - Structs    
     struct AddIngredientView : View {
         @Environment(\.dismiss) var dismiss
 
