@@ -9,8 +9,6 @@ import SwiftUI
 import SwiftData
 import MarkdownUI
 
-//MARK: - Global Vars
-
 struct RecipeView: View {
     //MARK: - Properties
     @State private var viewModel: ViewModel
@@ -134,7 +132,7 @@ struct RecipeView: View {
                                 AddIngredientView(newRecipe: recipe)
                             }
                             if recipe.ingredients.count > 0 {
-                                ForEach(recipe.ingredients) { ingredient in
+                                ForEach(recipe.ingredients.sorted(by: { $0.ingredientName < $1.ingredientName })) { ingredient in
                                     Text("\(ingredient.ingredientName): \(ingredient.measurement)")
                                 }
                             } else {
@@ -179,121 +177,6 @@ struct RecipeView: View {
                     AddSheetView()
                 }
             }
-        }
-    }
-
-// MARK: - Structs    
-    struct AddIngredientView : View {
-        @Environment(\.dismiss) var dismiss
-
-        @State var ingredientName: String = ""
-        @State var ingredientMeasurement: String = ""
-        @State var ingredientNote: String = ""
-        
-        var newRecipe: Recipe
-      
-        var body: some View {
-            NavigationStack {
-                Form {
-                    Section(header: Text("Recipe Ingredients")) {
-                        TextField("Name", text: $ingredientName, axis: .vertical)
-                        TextField("Measurement", text: $ingredientMeasurement, axis: .vertical)
-                        TextField("Additional notes (optional): ", text: $ingredientNote, axis: .vertical)
-                        Section {
-                            Button("Add"){
-                                addIngredient()
-                            }
-                        }
-                    }
-                }
-                List {
-                    ForEach(newRecipe.ingredients) { ingredient in
-                        Text(ingredient.ingredientName)
-                        Text(ingredient.measurement)
-                        if let note = ingredient.note {
-                            Text(note).padding()
-                        } else {
-                            Text("").padding()
-                        }
-                    }
-                }
-                .toolbar {
-                    ToolbarItem{
-                        Button("", systemImage: "xmark.circle") {
-                            dismiss()
-                        }
-                    }
-                }
-            }
-        }
-        
-        private func addIngredient() {
-           let newIngredient = RecipeIngredient(
-                ingredientName: ingredientName,
-                measurement: ingredientMeasurement,
-                note: ingredientNote
-            )
-            
-            ingredientName = ""
-            ingredientMeasurement = ""
-            ingredientNote = ""
-            
-            newRecipe.ingredients.append(newIngredient)
-
-        }
-    }
-    
-    struct AddInstructionView: View {
-        @Environment(\.dismiss) var dismiss
-        
-        @State var instructionDescription: String = ""
-        
-        var newRecipe: Recipe
-        
-        var body: some View {
-            NavigationStack {
-                Form {
-                    Section(header: Text("Recipe Instructions")) {
-                        TextField("Instructions", text: $instructionDescription, axis: .vertical)
-                    }
-                    Section {
-                        Button("Add"){
-                            addInstruction()
-                        }
-                    }
-                }
-                List {
-                    ForEach (newRecipe.instructions) { instruction in
-                        Text(String(instruction.order))
-                        Text(instruction.instructionDescription)
-                    }
-                }
-                .toolbar {
-                    ToolbarItem{
-                        Button("", systemImage: "xmark.circle") {
-                            dismiss()
-                        }
-                    }
-                }
-            }
-        }
-        
-        private func addInstruction() {
-            var order: Int {
-                if newRecipe.instructions.count == 0 {
-                        return 1
-                    } else {
-                        return newRecipe.instructions.count + 1
-                    }
-                }
-            
-            let newInstruction = RecipeInstruction(
-                    instructionDescription: instructionDescription,
-                    order: order
-                )
-                newRecipe.instructions.append(newInstruction)
-                
-                instructionDescription = ""
         }
     }
 }

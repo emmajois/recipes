@@ -23,8 +23,6 @@ struct AddSheetView: View {
     @State var recipeCategory: RecipeCategory = RecipeCategory(categoryName: "Testing")
     @State var recipeCategories: [RecipeCategory] = []
     
-    //@State var sheetViewModel: ViewModel
-    
     //have an init, if there is a recipe that has been passed, assign them to the state vars for edit
     //if there are issues with the save, try and save manually. modelContext.save.
 
@@ -78,28 +76,25 @@ struct AddSheetView: View {
 //        }
     
     private func addRecipe() {
-        withAnimation{
-            
-            recipeCategories.append(recipeCategory)
-            
-            let newRecipe = Recipe(
-                title: recipeTitle,
-                author: recipeAuthor,
-                date: recipeDate,
-                prepTime: recipePrepTime,
-                cookTime: recipeCookTime,
-                servings: recipeServings,
-                expertise: recipeExpertise,
-                calories: recipeCalories,
-                isFavorite: recipeIsFavorite,
-                ingredients: [],
-                instructions: [],
-                categories: recipeCategories
-            )
-            viewModel.addRecipe(newRecipe)
-            
-            dismiss()
-        }
+        recipeCategories.append(recipeCategory)
+        
+        let newRecipe = Recipe(
+            title: recipeTitle,
+            author: recipeAuthor,
+            date: recipeDate,
+            prepTime: recipePrepTime,
+            cookTime: recipeCookTime,
+            servings: recipeServings,
+            expertise: recipeExpertise,
+            calories: recipeCalories,
+            isFavorite: recipeIsFavorite,
+            ingredients: [],
+            instructions: [],
+            categories: recipeCategories
+        )
+        viewModel.addRecipe(newRecipe)
+        
+        dismiss()
     }
 }
 
