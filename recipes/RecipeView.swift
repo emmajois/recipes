@@ -12,15 +12,23 @@ import MarkdownUI
 //MARK: - Global Vars
 
 struct RecipeView: View {
-    @Environment(\.modelContext) private var modelContext
+    //MARK: - Properties
+    //@Environment(\.modelContext) private var modelContext
+    @State fileprivate var viewModel: ViewModel
     
-    @Query private var recipes: [Recipe]
+    //@Query private var recipes: [Recipe]
     @State fileprivate var showingAddRecipeSheet = false
     @State fileprivate var showingAddIngredientSheet = false
     @State fileprivate var showingAddInstructionSheet = false
-
+    
+    //MARK: - Initialize
+    init(_ modelContext: ModelContext) {
+        _viewModel = State(initialValue: ViewModel(modelContext))
+    }
+    
     var body: some View {
         NavigationSplitView {
+            //add in a task for populating the sample data (37 minutes in the zoom video)
             List {
                 // a section for browse, search, favorites
                 Section(header: Text("Actions")) {
@@ -80,13 +88,13 @@ struct RecipeView: View {
         showingAddInstructionSheet.toggle()
     }
 
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(recipes[index])
-            }
-        }
-    }
+//    private func deleteItems(offsets: IndexSet) {
+//        withAnimation {
+//            for index in offsets {
+//                modelContext.delete(recipes[index])
+//            }
+//        }
+//    }
     
     private func initializeRecipes() {
         withAnimation {
@@ -109,7 +117,7 @@ struct RecipeView: View {
 // MARK: - Variables
     private var browseAllList: some View {
         List {
-            ForEach(recipes) { recipe in
+            ForEach(viewModel.recipes) { recipe in
                 NavigationLink {
                     ScrollView {
                         VStack {
@@ -161,7 +169,7 @@ struct RecipeView: View {
                     Text(recipe.title)
                 }
             }
-            .onDelete(perform: deleteItems)
+            //.onDelete(perform: deleteItems)
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -177,7 +185,7 @@ struct RecipeView: View {
                     Label("Add Recipe", systemImage: "plus")
                 }
                 .sheet(isPresented: $showingAddRecipeSheet) {
-                    AddSheetView()
+                    AddSheetView(sheetViewModel: viewModel)
                 }
             }
         }
@@ -186,7 +194,6 @@ struct RecipeView: View {
 // MARK: - Structs
     struct AddSheetView: View {
         @Environment(\.dismiss) var dismiss
-        @Environment(\.modelContext) private var modelContext
         
         @State var recipeTitle: String = ""
         @State var recipeAuthor: String = ""
@@ -198,6 +205,7 @@ struct RecipeView: View {
         @State var recipeCalories: Int = 5
         @State var recipeIsFavorite: Bool = false
         @State var category: String = ""
+        @State var sheetViewModel: ViewModel
         
         var body: some View {
             NavigationStack {
@@ -219,6 +227,7 @@ struct RecipeView: View {
                         }
                     }
                     //TODO: Make it so multiple categories can be added
+                    //next up! Left off the video at 22 minutes, will probably pick up there next.
                     //picker
 //                    Section(header: Text("Recipe Category")){
 //                        TextField("Category", text: $category)
@@ -250,9 +259,11 @@ struct RecipeView: View {
                     servings: recipeServings,
                     expertise: recipeExpertise,
                     calories: recipeCalories,
-                    isFavorite: recipeIsFavorite
+                    isFavorite: recipeIsFavorite,
+                    categories: []
                 )
-                modelContext.insert(newRecipe)
+                sheetViewModel.addRecipe(newRecipe)
+                
                 dismiss()
             }
         }
@@ -308,8 +319,7 @@ struct RecipeView: View {
            let newIngredient = RecipeIngredient(
                 ingredientName: ingredientName,
                 measurement: ingredientMeasurement,
-                note: ingredientNote,
-                recipe: newRecipe
+                note: ingredientNote
             )
             
             ingredientName = ""
@@ -373,8 +383,7 @@ struct RecipeView: View {
             
             let newInstruction = RecipeInstruction(
                     instructionDescription: instructionDescription,
-                    order: order,
-                    recipe: newRecipe
+                    order: order
                 )
                 newRecipe.instructions?.append(newInstruction)
                 
@@ -384,6 +393,17 @@ struct RecipeView: View {
 }
 
 #Preview {
-    RecipeView()
-        .modelContainer(for: Recipe.self, inMemory: true)
+    let container = { () -> ModelContainer in
+        do {
+            return try ModelContainer(
+                for: Recipe.self, RecipeCategory.self,
+                configurations:
+                    ModelConfiguration(isStoredInMemoryOnly: true)
+                )
+        } catch {
+            fatalError("Failed to create ModelContainer for Recipes.")
+        }
+    } ()
+    return RecipeView(container.mainContext)
+        .modelContainer(container)
 }

@@ -25,9 +25,9 @@ final class Recipe {
     var ingredients: [RecipeIngredient]?
     @Relationship(deleteRule: .cascade)
     var instructions: [RecipeInstruction]?
-    var categories: [RecipeCategory]?
+    var categories: [RecipeCategory]
     
-    init(title: String, author: String, date: Date, prepTime: Int, cookTime: Int, servings: Int, expertise: Int, calories: Int, isFavorite: Bool) {
+    init(title: String, author: String, date: Date, prepTime: Int, cookTime: Int, servings: Int, expertise: Int, calories: Int, isFavorite: Bool, categories: [RecipeCategory]) {
         self.title = title
         self.author = author
         self.date = date
@@ -37,6 +37,7 @@ final class Recipe {
         self.expertise = expertise
         self.calories = calories
         self.isFavorite = isFavorite
+        self.categories = categories
     }
 }
 
@@ -45,13 +46,11 @@ final class RecipeIngredient {
     var ingredientName: String
     var measurement: String
     var note: String?
-    var recipe: Recipe?
     
-    init(ingredientName: String, measurement: String, note:  String?, recipe: Recipe?) {
+    init(ingredientName: String, measurement: String, note: String?) {
         self.ingredientName = ingredientName
         self.measurement = measurement
         self.note = note
-        self.recipe = recipe
     }
 }
 
@@ -59,21 +58,21 @@ final class RecipeIngredient {
 final class RecipeInstruction {
     var instructionDescription: String
     var order: Int
-    var recipe: Recipe?
 
-    init(instructionDescription: String, order: Int, recipe: Recipe?) {
+    init(instructionDescription: String, order: Int) {
         self.instructionDescription = instructionDescription
         self.order = order
-        self.recipe = recipe
     }
 }
 
 @Model
 final class RecipeCategory {
     var categoryName: String
-    var recipe: Recipe?
+    @Relationship(inverse: \Recipe.categories)
+    var recipes: [Recipe] = []
     
-    init(categoryName: String) {
+    init(categoryName: String, recipes: [Recipe] = []) {
         self.categoryName = categoryName
+        self.recipes = recipes
     }
 }
