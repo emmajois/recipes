@@ -31,6 +31,7 @@ struct AddInstructionView: View {
                     Text(String(instruction.order))
                     Text(instruction.instructionDescription)
                 }
+                .onDelete(perform: deleteInstruction)
             }
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -72,4 +73,13 @@ struct AddInstructionView: View {
         
         recipeInstructions.append(newInstruction)
     }
+    
+    private func deleteInstruction(offsets: IndexSet) {
+        withAnimation {
+            for index in offsets {
+                recipeInstructions.remove(at:index)
+            }
+        }
+    }
+
 }

@@ -59,7 +59,7 @@ struct AddSheetView: View {
                 //Ingredients
                 Section(header: Text("Ingredients")) {
                     Button(action: openIngredientModal) {
-                        Label("Add Ingredients", systemImage: "plus")
+                        Label(ingredientTitle, systemImage: "plus")
                     }
                     .sheet(isPresented: $showingAddIngredientSheet) {
                         AddIngredientView(recipeIngredients: $recipeIngredients)
@@ -79,7 +79,7 @@ struct AddSheetView: View {
                 //Instructions
                 Section(header: Text("Instructions")) {
                     Button(action: openInstructionModal) {
-                        Label("Add Instructions", systemImage: "plus")
+                        Label(instructionTitle, systemImage: "plus")
                     }
                     .sheet(isPresented: $showingAddInstructionSheet) {
                         AddInstructionView(recipeInstructions: $recipeInstructions)
@@ -140,10 +140,20 @@ struct AddSheetView: View {
         }
     }
     
+    //MARK: - Vars
     private var formTitle: String {
         recipe == nil ? "Add a New Recipe" : "Edit Recipe"
     }
     
+    private var ingredientTitle: String {
+        recipeIngredients.count == 0 ? "Add ingredients" : "Edit ingredients"
+    }
+    
+    private var instructionTitle: String {
+        recipeIngredients.count == 0 ? "Add instructions" : "Edit instructions"
+    }
+    
+    //MARK: - Funcs
     private func openIngredientModal() {
         showingAddIngredientSheet.toggle()
     }
