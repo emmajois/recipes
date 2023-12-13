@@ -33,6 +33,7 @@ struct AddInstructionView: View {
                 }
                 .onDelete(perform: deleteInstruction)
             }
+            .navigationTitle(instructionTitle)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(action: {
@@ -53,6 +54,10 @@ struct AddInstructionView: View {
                 }
             }
         }
+    }
+    
+    private var instructionTitle: String {
+        recipeInstructions.count == 0 ? "Add instructions" : "Edit instructions"
     }
     
     private func addInstruction() {

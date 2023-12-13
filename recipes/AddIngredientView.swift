@@ -41,7 +41,7 @@ struct AddIngredientView : View {
                 }
                 .onDelete(perform: deleteIngredient)
             }
-            //.navigationTitle(formTitle)
+            .navigationTitle(ingredientTitle)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(action: {
@@ -64,7 +64,9 @@ struct AddIngredientView : View {
         }
     }
     
-    //private var formTitle = "Add Ingredients"
+    private var ingredientTitle: String {
+        recipeIngredients.count == 0 ? "Add ingredients" : "Edit ingredients"
+    }
     
     private func addIngredient() {
        let newIngredient = RecipeIngredient(
