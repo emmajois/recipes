@@ -37,22 +37,6 @@ class ViewModel {
         fetchData()
     }
     
-    func findCategory (categoryString: String) -> RecipeCategory {
-        var foundCategory: RecipeCategory?
-        
-        categories.forEach { category in
-            if category.categoryName == categoryString {
-                foundCategory = category
-            }
-        }
-        
-        if let foundCategory {
-            return foundCategory
-        } else {
-            return RecipeCategory(categoryName: categoryString)
-        }
-    }
-    
     func replaceAllRecipes(
         _ recipes: [Recipe],
         _ baseCategories: [RecipeCategory],

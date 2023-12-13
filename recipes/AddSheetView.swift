@@ -20,7 +20,8 @@ struct AddSheetView: View {
     @State var recipeExpertise: Int = 1
     @State var recipeCalories: Int = 5
     @State var recipeIsFavorite: Bool = false
-    @State var recipeCategory: String = "Appetizer"
+    //@State var recipeCategory: String = "Appetizer"
+    @State var recipeCategory: Set<RecipeCategory> = []
     @State var recipeCategories: [RecipeCategory] = []
     //Pass the list of instructions and ingredients list down to the child structs and then they can be referenced here.
     
@@ -46,14 +47,13 @@ struct AddSheetView: View {
                         Text("Favorite?")
                     }
                 }
-                //TODO: Make it so multiple categories can be added
-                //TODO: Make it so it can actually add the category
                 Section(header: Text("Recipe Category")){
-                    Picker("Category", selection: $recipeCategory){
-                        ForEach(viewModel.categories) {category in
-                            Text(category.categoryName).tag(category.categoryName)
-                        }
-                    }
+                    MultiSelector(
+                        label: Text("Category"),
+                        options: viewModel.categories,
+                        optionToString: {$0.categoryName},
+                        selected: $recipeCategory
+                    )
                 }
                 Section {
                     Button("Submit"){
@@ -76,10 +76,7 @@ struct AddSheetView: View {
 //            recipe == nil? "New Recipe" : "Edit Recipe"
 //        }
     
-    private func addRecipe() {
-        //search all the categories where it matches the string and then append that category on there
-        //recipeCategories.append(viewModel.findCategory(categoryString: recipeCategory))
-        
+    private func addRecipe() {        
         let newRecipe = Recipe(
             title: recipeTitle,
             author: recipeAuthor,
@@ -95,7 +92,9 @@ struct AddSheetView: View {
             categories: []
         )
         
-        recipeCategories.append(viewModel.findCategory(categoryString: recipeCategory))
+        recipeCategory.forEach { category in
+            recipeCategories.append(category)
+        }
         
         newRecipe.categories = recipeCategories
         
