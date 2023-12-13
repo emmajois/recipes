@@ -12,7 +12,7 @@ import SwiftData
 struct recipesApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Recipe.self,
+            Recipe.self, RecipeCategory.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

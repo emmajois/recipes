@@ -20,8 +20,9 @@ struct AddSheetView: View {
     @State var recipeExpertise: Int = 1
     @State var recipeCalories: Int = 5
     @State var recipeIsFavorite: Bool = false
-    @State var recipeCategory: RecipeCategory = RecipeCategory(categoryName: "Testing")
+    @State var recipeCategory: String = "Appetizer"
     @State var recipeCategories: [RecipeCategory] = []
+    //Pass the list of instructions and ingredients list down to the child structs and then they can be referenced here.
     
     //have an init, if there is a recipe that has been passed, assign them to the state vars for edit
     //if there are issues with the save, try and save manually. modelContext.save.
@@ -50,7 +51,7 @@ struct AddSheetView: View {
                 Section(header: Text("Recipe Category")){
                     Picker("Category", selection: $recipeCategory){
                         ForEach(viewModel.categories) {category in
-                            Text(category.categoryName).tag(category)
+                            Text(category.categoryName).tag(category.categoryName)
                         }
                     }
                 }
@@ -60,7 +61,7 @@ struct AddSheetView: View {
                     }
                 }
             }
-           // .navigationTitle(formTitle)
+            .navigationTitle("Add Recipe")
             .toolbar {
                 ToolbarItem{
                     Button("", systemImage: "xmark.circle") {
@@ -76,7 +77,8 @@ struct AddSheetView: View {
 //        }
     
     private func addRecipe() {
-        recipeCategories.append(recipeCategory)
+        //search all the categories where it matches the string and then append that category on there
+        //recipeCategories.append(recipeCategory)
         
         let newRecipe = Recipe(
             title: recipeTitle,
