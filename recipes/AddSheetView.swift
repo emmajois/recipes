@@ -26,12 +26,15 @@ struct AddSheetView: View {
     @State var recipeCategories: [RecipeCategory] = []
     //Pass the list of instructions and ingredients list down to the child structs and then they can be referenced here.
     @State var recipeIngredients: [RecipeIngredient] = []
-    @State fileprivate var showingAddIngredientSheet = false
+    @State var recipeInstructions: [RecipeInstruction] = []
+    
+    @State private var showingAddIngredientSheet = false
+    @State private var showingAddInstructionSheet = false
     
     init(recipe: Recipe?) {
         self.recipe = recipe
     }
-
+    
     var body: some View {
         NavigationStack {
             
@@ -55,10 +58,9 @@ struct AddSheetView: View {
                     Button(action: openIngredientModal) {
                         Label("Add Ingredients", systemImage: "plus")
                     }
-                    .buttonStyle(.bordered)
-                                .sheet(isPresented: $showingAddIngredientSheet) {
-                                    AddIngredientView(recipeIngredients: $recipeIngredients)
-                                }
+                    .sheet(isPresented: $showingAddIngredientSheet) {
+                        AddIngredientView(recipeIngredients: $recipeIngredients)
+                    }
                     List {
                         ForEach(recipeIngredients) { ingredient in
                             Text(ingredient.ingredientName)
@@ -68,6 +70,20 @@ struct AddSheetView: View {
                             } else {
                                 Text("").padding()
                             }
+                        }
+                    }
+                }
+                Section(header: Text("Instructions")) {
+                    Button(action: openInstructionModal) {
+                        Label("Add Instructions", systemImage: "plus")
+                    }
+                    .sheet(isPresented: $showingAddInstructionSheet) {
+                        AddInstructionView(recipeInstructions: $recipeInstructions)
+                    }
+                    List {
+                        ForEach (recipeInstructions) { instruction in
+                            Text(String(instruction.order))
+                            Text(instruction.instructionDescription)
                         }
                     }
                 }
@@ -91,7 +107,7 @@ struct AddSheetView: View {
                         }
                         dismiss()
                     }, label: {
-                            Text("Save")
+                        Text("Save")
                     })
                 }
                 ToolbarItem(placement: .cancellationAction){
@@ -114,6 +130,7 @@ struct AddSheetView: View {
                 recipeIsFavorite = recipe.isFavorite
                 recipeCategory = Set(recipe.categories)
                 recipeIngredients = recipe.ingredients
+                recipeInstructions = recipe.instructions
             }
         }
     }
@@ -124,6 +141,10 @@ struct AddSheetView: View {
     
     private func openIngredientModal() {
         showingAddIngredientSheet.toggle()
+    }
+    
+    private func openInstructionModal() {
+        showingAddInstructionSheet.toggle()
     }
     
     private func addRecipe() {
@@ -148,6 +169,7 @@ struct AddSheetView: View {
         
         newRecipe.categories = recipeCategories
         newRecipe.ingredients = recipeIngredients
+        newRecipe.instructions = recipeInstructions
         
         viewModel.addRecipe(newRecipe)
     }
@@ -168,6 +190,7 @@ struct AddSheetView: View {
         recipeToEdit.isFavorite = recipeIsFavorite
         recipeToEdit.categories = recipeCategories
         recipeToEdit.ingredients = recipeIngredients
+        recipeToEdit.instructions = recipeInstructions
         
         viewModel.addRecipe(recipeToEdit)
     }

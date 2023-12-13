@@ -12,7 +12,7 @@ struct AddInstructionView: View {
     
     @State var instructionDescription: String = ""
     
-    var newRecipe: Recipe
+    @Binding var recipeInstructions: [RecipeInstruction]
     
     var body: some View {
         NavigationStack {
@@ -27,13 +27,25 @@ struct AddInstructionView: View {
                 }
             }
             List {
-                ForEach (newRecipe.instructions) { instruction in
+                ForEach (recipeInstructions) { instruction in
                     Text(String(instruction.order))
                     Text(instruction.instructionDescription)
                 }
             }
             .toolbar {
-                ToolbarItem{
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(action: {
+//                        if let recipe {
+//                            editRecipe(recipeToEdit: recipe)
+//                        } else {
+//                            addRecipe()
+//                        }
+                        dismiss()
+                    }, label: {
+                            Text("Save")
+                    })
+                }
+                ToolbarItem(placement: .cancellationAction){
                     Button("", systemImage: "xmark.circle") {
                         dismiss()
                     }
@@ -44,10 +56,10 @@ struct AddInstructionView: View {
     
     private func addInstruction() {
         var order: Int {
-            if newRecipe.instructions.count == 0 {
+            if recipeInstructions.count == 0 {
                     return 1
                 } else {
-                    return newRecipe.instructions.count + 1
+                    return recipeInstructions.count + 1
                 }
             }
         
@@ -55,7 +67,7 @@ struct AddInstructionView: View {
                 instructionDescription: instructionDescription,
                 order: order
             )
-            newRecipe.instructions.append(newInstruction)
+            recipeInstructions.append(newInstruction)
             
             instructionDescription = ""
     }

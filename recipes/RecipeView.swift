@@ -88,10 +88,6 @@ struct RecipeView: View {
         showingAddRecipeSheet.toggle()
     }
     
-    private func openInstructionModal() {
-        showingAddInstructionSheet.toggle()
-    }
-
     private func deleteRecipes(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
@@ -131,13 +127,6 @@ struct RecipeView: View {
                             //TODO: - Order the lists both inside and outside
                             Text("Instructions")
                                 .font(.subheadline)
-                            Button(action: openInstructionModal) {
-                                Label("Add Instructions", systemImage: "plus")
-                            }
-                            .buttonStyle(.bordered)
-                            .sheet(isPresented: $showingAddInstructionSheet) {
-                                AddInstructionView(newRecipe: recipe)
-                            }
                             if recipe.instructions.count > 0 {
                                 ForEach(recipe.instructions.sorted(by: { $0.order < $1.order })) { instruction in
                                     Text("\(instruction.order): \(instruction.instructionDescription)")
