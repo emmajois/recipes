@@ -17,7 +17,6 @@ struct RecipeView: View {
     @State private var isEditing = false
     
     @State fileprivate var showingAddRecipeSheet = false
-    @State fileprivate var showingAddIngredientSheet = false
     @State fileprivate var showingAddInstructionSheet = false
     
     //MARK: - Initialize
@@ -89,10 +88,6 @@ struct RecipeView: View {
         showingAddRecipeSheet.toggle()
     }
     
-    private func openIngredientModal() {
-        showingAddIngredientSheet.toggle()
-    }
-    
     private func openInstructionModal() {
         showingAddInstructionSheet.toggle()
     }
@@ -125,13 +120,6 @@ struct RecipeView: View {
                             //TODO: - Order the lists both inside and outside
                             Text("Ingredients")
                                 .font(.subheadline)
-                            Button(action: openIngredientModal) {
-                                Label("Add Ingredients", systemImage: "plus")
-                            }
-                            .buttonStyle(.bordered)
-                            .sheet(isPresented: $showingAddIngredientSheet) {
-                                AddIngredientView(newRecipe: recipe)
-                            }
                             if recipe.ingredients.count > 0 {
                                 ForEach(recipe.ingredients.sorted(by: { $0.ingredientName < $1.ingredientName })) { ingredient in
                                     Text("\(ingredient.ingredientName): \(ingredient.measurement)")

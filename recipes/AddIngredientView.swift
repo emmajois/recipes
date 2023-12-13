@@ -14,8 +14,7 @@ struct AddIngredientView : View {
     @State var ingredientMeasurement: String = ""
     @State var ingredientNote: String = ""
     
-    //@Binding var recipeIngredients: [RecipeIngredient]
-    var newRecipe: Recipe
+    @Binding var recipeIngredients: [RecipeIngredient]
   
     var body: some View {
         NavigationStack {
@@ -32,7 +31,7 @@ struct AddIngredientView : View {
                 }
             }
             List {
-                ForEach(newRecipe.ingredients) { ingredient in
+                ForEach(recipeIngredients) { ingredient in
                     Text(ingredient.ingredientName)
                     Text(ingredient.measurement)
                     if let note = ingredient.note {
@@ -42,8 +41,21 @@ struct AddIngredientView : View {
                     }
                 }
             }
+            //.navigationTitle(formTitle)
             .toolbar {
-                ToolbarItem{
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(action: {
+//                        if let recipe {
+//                            editRecipe(recipeToEdit: recipe)
+//                        } else {
+//                            addRecipe()
+//                        }
+                        dismiss()
+                    }, label: {
+                            Text("Save")
+                    })
+                }
+                ToolbarItem(placement: .cancellationAction){
                     Button("", systemImage: "xmark.circle") {
                         dismiss()
                     }
@@ -51,6 +63,8 @@ struct AddIngredientView : View {
             }
         }
     }
+    
+    //private var formTitle = "Add Ingredients"
     
     private func addIngredient() {
        let newIngredient = RecipeIngredient(
@@ -62,8 +76,7 @@ struct AddIngredientView : View {
         ingredientName = ""
         ingredientMeasurement = ""
         ingredientNote = ""
-        
-        newRecipe.ingredients.append(newIngredient)
+        recipeIngredients.append(newIngredient)
 
     }
 }

@@ -4,6 +4,7 @@
 //
 //  Created by Emma Swalberg on 11/21/23.
 //
+// Recipe Icon courtsey of AdobeStock
 
 import SwiftUI
 import SwiftData

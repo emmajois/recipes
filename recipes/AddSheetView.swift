@@ -25,6 +25,8 @@ struct AddSheetView: View {
     @State var recipeCategory: Set<RecipeCategory> = []
     @State var recipeCategories: [RecipeCategory] = []
     //Pass the list of instructions and ingredients list down to the child structs and then they can be referenced here.
+    @State var recipeIngredients: [RecipeIngredient] = []
+    @State fileprivate var showingAddIngredientSheet = false
     
     init(recipe: Recipe?) {
         self.recipe = recipe
@@ -47,6 +49,26 @@ struct AddSheetView: View {
                     Stepper("Calories per serving: \(recipeCalories)", value: $recipeCalories, in: 0...500, step: 5)
                     Toggle(isOn: $recipeIsFavorite){
                         Text("Favorite?")
+                    }
+                }
+                Section(header: Text("Ingredients")) {
+                    Button(action: openIngredientModal) {
+                        Label("Add Ingredients", systemImage: "plus")
+                    }
+                    .buttonStyle(.bordered)
+                                .sheet(isPresented: $showingAddIngredientSheet) {
+                                    AddIngredientView(recipeIngredients: $recipeIngredients)
+                                }
+                    List {
+                        ForEach(recipeIngredients) { ingredient in
+                            Text(ingredient.ingredientName)
+                            Text(ingredient.measurement)
+                            if let note = ingredient.note {
+                                Text(note).padding()
+                            } else {
+                                Text("").padding()
+                            }
+                        }
                     }
                 }
                 Section(header: Text("Recipe Category")){
@@ -91,12 +113,17 @@ struct AddSheetView: View {
                 recipeCalories = recipe.calories
                 recipeIsFavorite = recipe.isFavorite
                 recipeCategory = Set(recipe.categories)
+                recipeIngredients = recipe.ingredients
             }
         }
     }
     
     private var formTitle: String {
         recipe == nil ? "Add a New Recipe" : "Edit Recipe"
+    }
+    
+    private func openIngredientModal() {
+        showingAddIngredientSheet.toggle()
     }
     
     private func addRecipe() {
@@ -120,6 +147,7 @@ struct AddSheetView: View {
         }
         
         newRecipe.categories = recipeCategories
+        newRecipe.ingredients = recipeIngredients
         
         viewModel.addRecipe(newRecipe)
     }
@@ -139,6 +167,7 @@ struct AddSheetView: View {
         recipeToEdit.calories = recipeCalories
         recipeToEdit.isFavorite = recipeIsFavorite
         recipeToEdit.categories = recipeCategories
+        recipeToEdit.ingredients = recipeIngredients
         
         viewModel.addRecipe(recipeToEdit)
     }
