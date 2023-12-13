@@ -29,7 +29,6 @@ struct AddSheetView: View {
     init(recipe: Recipe?) {
         self.recipe = recipe
     }
-    //if there are issues with the save, try and save manually. modelContext.save.
 
     var body: some View {
         NavigationStack {
@@ -58,18 +57,13 @@ struct AddSheetView: View {
                         selected: $recipeCategory
                     )
                 }
-                Section {
-                    Button("Submit"){
-                        addRecipe()
-                    }
-                }
             }
             .navigationTitle(formTitle)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(action: {
                         if let recipe {
-                            //edit save logic
+                            editRecipe(recipeToEdit: recipe)
                         } else {
                             addRecipe()
                         }
@@ -96,8 +90,6 @@ struct AddSheetView: View {
                 recipeExpertise = recipe.expertise
                 recipeCalories = recipe.calories
                 recipeIsFavorite = recipe.isFavorite
-                recipeCategories = recipe.categories
-                //this may not work
                 recipeCategory = Set(recipe.categories)
             }
         }
@@ -130,6 +122,25 @@ struct AddSheetView: View {
         newRecipe.categories = recipeCategories
         
         viewModel.addRecipe(newRecipe)
+    }
+    
+    private func editRecipe(recipeToEdit: Recipe) {
+        recipeCategory.forEach { category in
+            recipeCategories.append(category)
+        }
+        
+        recipeToEdit.title = recipeTitle
+        recipeToEdit.author = recipeAuthor
+        recipeToEdit.date = recipeDate
+        recipeToEdit.prepTime = recipePrepTime
+        recipeToEdit.cookTime = recipeCookTime
+        recipeToEdit.servings = recipeServings
+        recipeToEdit.expertise = recipeExpertise
+        recipeToEdit.calories = recipeCalories
+        recipeToEdit.isFavorite = recipeIsFavorite
+        recipeToEdit.categories = recipeCategories
+        
+        viewModel.addRecipe(recipeToEdit)
     }
 }
 

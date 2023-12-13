@@ -14,6 +14,7 @@ struct RecipeView: View {
     @State private var viewModel: ViewModel
     @State private var hasError = false
     @State private var errorMessage = ""
+    @State private var isEditing = false
     
     @State fileprivate var showingAddRecipeSheet = false
     @State fileprivate var showingAddIngredientSheet = false
@@ -60,7 +61,7 @@ struct RecipeView: View {
             browseAllList
 
         } detail: {
-            Text("Select an item")
+            Text("Select a recipe")
         }
         .alert(isPresented: $hasError) {
             Alert(
@@ -157,6 +158,18 @@ struct RecipeView: View {
                                 Text("No instructions!").padding()
                             }
 
+                        }
+                        .toolbar {
+                            ToolbarItem(placement: .primaryAction) {
+                                Button(action: {
+                                    isEditing = true
+                                }, label: {
+                                    Label("Edit Item", systemImage: "pencil")
+                                })
+                            }
+                        }
+                        .sheet(isPresented: $isEditing){
+                            AddSheetView(recipe: recipe)
                         }
                     }
                 } label: {

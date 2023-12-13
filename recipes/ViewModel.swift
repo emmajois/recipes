@@ -37,6 +37,12 @@ class ViewModel {
         fetchData()
     }
     
+    func saveRecipe(_ recipe: Recipe) {
+        try? modelContext.save()
+        
+        fetchData()
+    }
+    
     func replaceAllRecipes(
         _ recipes: [Recipe],
         _ baseCategories: [RecipeCategory],
