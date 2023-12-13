@@ -14,6 +14,7 @@ struct AddIngredientView : View {
     @State var ingredientMeasurement: String = ""
     @State var ingredientNote: String = ""
     
+    //@Binding var recipeIngredients: [RecipeIngredient]
     var newRecipe: Recipe
   
     var body: some View {

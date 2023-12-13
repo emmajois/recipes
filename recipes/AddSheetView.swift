@@ -11,6 +11,8 @@ struct AddSheetView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(ViewModel.self) private var viewModel
     
+    let recipe: Recipe?
+    
     @State var recipeTitle: String = ""
     @State var recipeAuthor: String = ""
     @State var recipeDate: Date = Date()
@@ -20,12 +22,13 @@ struct AddSheetView: View {
     @State var recipeExpertise: Int = 1
     @State var recipeCalories: Int = 5
     @State var recipeIsFavorite: Bool = false
-    //@State var recipeCategory: String = "Appetizer"
     @State var recipeCategory: Set<RecipeCategory> = []
     @State var recipeCategories: [RecipeCategory] = []
     //Pass the list of instructions and ingredients list down to the child structs and then they can be referenced here.
     
-    //have an init, if there is a recipe that has been passed, assign them to the state vars for edit
+    init(recipe: Recipe?) {
+        self.recipe = recipe
+    }
     //if there are issues with the save, try and save manually. modelContext.save.
 
     var body: some View {
@@ -61,22 +64,50 @@ struct AddSheetView: View {
                     }
                 }
             }
-            .navigationTitle("Add Recipe")
+            .navigationTitle(formTitle)
             .toolbar {
-                ToolbarItem{
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(action: {
+                        if let recipe {
+                            //edit save logic
+                        } else {
+                            addRecipe()
+                        }
+                        dismiss()
+                    }, label: {
+                            Text("Save")
+                    })
+                }
+                ToolbarItem(placement: .cancellationAction){
                     Button("", systemImage: "xmark.circle") {
                         dismiss()
                     }
                 }
             }
         }
+        .onAppear {
+            if let recipe {
+                recipeTitle = recipe.title
+                recipeAuthor = recipe.author
+                recipeDate = recipe.date
+                recipePrepTime = recipe.prepTime
+                recipeCookTime = recipe.cookTime
+                recipeServings = recipe.servings
+                recipeExpertise = recipe.expertise
+                recipeCalories = recipe.calories
+                recipeIsFavorite = recipe.isFavorite
+                recipeCategories = recipe.categories
+                //this may not work
+                recipeCategory = Set(recipe.categories)
+            }
+        }
     }
     
-//        private var formTitle: String {
-//            recipe == nil? "New Recipe" : "Edit Recipe"
-//        }
+    private var formTitle: String {
+        recipe == nil ? "Add a New Recipe" : "Edit Recipe"
+    }
     
-    private func addRecipe() {        
+    private func addRecipe() {
         let newRecipe = Recipe(
             title: recipeTitle,
             author: recipeAuthor,
@@ -99,11 +130,9 @@ struct AddSheetView: View {
         newRecipe.categories = recipeCategories
         
         viewModel.addRecipe(newRecipe)
-        
-        dismiss()
     }
 }
 
 #Preview {
-    AddSheetView()
+    AddSheetView(recipe: nil)
 }

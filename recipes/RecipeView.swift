@@ -174,7 +174,7 @@ struct RecipeView: View {
                     Label("Add Recipe", systemImage: "plus")
                 }
                 .sheet(isPresented: $showingAddRecipeSheet) {
-                    AddSheetView()
+                    AddSheetView(recipe: nil)
                 }
             }
         }
