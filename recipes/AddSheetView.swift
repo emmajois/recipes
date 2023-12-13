@@ -78,7 +78,7 @@ struct AddSheetView: View {
     
     private func addRecipe() {
         //search all the categories where it matches the string and then append that category on there
-        //recipeCategories.append(recipeCategory)
+        //recipeCategories.append(viewModel.findCategory(categoryString: recipeCategory))
         
         let newRecipe = Recipe(
             title: recipeTitle,
@@ -92,8 +92,13 @@ struct AddSheetView: View {
             isFavorite: recipeIsFavorite,
             ingredients: [],
             instructions: [],
-            categories: recipeCategories
+            categories: []
         )
+        
+        recipeCategories.append(viewModel.findCategory(categoryString: recipeCategory))
+        
+        newRecipe.categories = recipeCategories
+        
         viewModel.addRecipe(newRecipe)
         
         dismiss()

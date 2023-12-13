@@ -74,7 +74,8 @@ let baseCategories = [
     RecipeCategory(categoryName: "Lunch"),
     RecipeCategory(categoryName: "Dinner"),
     RecipeCategory(categoryName: "Dessert"),
-    RecipeCategory(categoryName: "Appetizer")
+    RecipeCategory(categoryName: "Appetizer"),
+    RecipeCategory(categoryName: "Other")
 ]
 
 let sampleAssociations = [
