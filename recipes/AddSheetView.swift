@@ -13,6 +13,7 @@ struct AddSheetView: View {
     
     let recipe: Recipe?
     
+    //All the recipe fields
     @State var recipeTitle: String = ""
     @State var recipeAuthor: String = ""
     @State var recipeDate: Date = Date()
@@ -24,10 +25,10 @@ struct AddSheetView: View {
     @State var recipeIsFavorite: Bool = false
     @State var recipeCategory: Set<RecipeCategory> = []
     @State var recipeCategories: [RecipeCategory] = []
-    //Pass the list of instructions and ingredients list down to the child structs and then they can be referenced here.
     @State var recipeIngredients: [RecipeIngredient] = []
     @State var recipeInstructions: [RecipeInstruction] = []
     
+    //Nested Sheets
     @State private var showingAddIngredientSheet = false
     @State private var showingAddInstructionSheet = false
     
@@ -41,6 +42,7 @@ struct AddSheetView: View {
             ///Form help:  https://blog.logrocket.com/building-forms-swiftui-comprehensive-guide/
             
             Form {
+                //Recipe metadata
                 Section(header: Text("Recipe Information")) {
                     TextField("Title", text: $recipeTitle)
                     TextField("Author", text: $recipeAuthor)
@@ -54,6 +56,7 @@ struct AddSheetView: View {
                         Text("Favorite?")
                     }
                 }
+                //Ingredients
                 Section(header: Text("Ingredients")) {
                     Button(action: openIngredientModal) {
                         Label("Add Ingredients", systemImage: "plus")
@@ -73,6 +76,7 @@ struct AddSheetView: View {
                         }
                     }
                 }
+                //Instructions
                 Section(header: Text("Instructions")) {
                     Button(action: openInstructionModal) {
                         Label("Add Instructions", systemImage: "plus")
@@ -87,6 +91,7 @@ struct AddSheetView: View {
                         }
                     }
                 }
+                //Categories
                 Section(header: Text("Recipe Category")){
                     MultiSelector(
                         label: Text("Category"),

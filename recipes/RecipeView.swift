@@ -16,8 +16,7 @@ struct RecipeView: View {
     @State private var errorMessage = ""
     @State private var isEditing = false
     
-    @State fileprivate var showingAddRecipeSheet = false
-    @State fileprivate var showingAddInstructionSheet = false
+    @State private var showingAddRecipeSheet = false
     
     //MARK: - Initialize
     init(_ modelContext: ModelContext) {
@@ -101,6 +100,7 @@ struct RecipeView: View {
         List {
             ForEach(viewModel.recipes) { recipe in
                 NavigationLink {
+                    //Individual Recipe Content
                     ScrollView {
                         VStack {
                             //title

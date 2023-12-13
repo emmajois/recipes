@@ -67,8 +67,9 @@ struct AddInstructionView: View {
                 instructionDescription: instructionDescription,
                 order: order
             )
-            recipeInstructions.append(newInstruction)
-            
-            instructionDescription = ""
+        
+        instructionDescription = ""
+        
+        recipeInstructions.append(newInstruction)
     }
 }

@@ -32,14 +32,14 @@ struct AddIngredientView : View {
             }
             List {
                 ForEach(recipeIngredients) { ingredient in
-                    Text(ingredient.ingredientName)
-                    Text(ingredient.measurement)
+                    Text("\(ingredient.ingredientName): \(ingredient.measurement)")
                     if let note = ingredient.note {
                         Text(note).padding()
                     } else {
                         Text("").padding()
                     }
                 }
+                .onDelete(perform: deleteIngredient)
             }
             //.navigationTitle(formTitle)
             .toolbar {
@@ -76,8 +76,16 @@ struct AddIngredientView : View {
         ingredientName = ""
         ingredientMeasurement = ""
         ingredientNote = ""
+        
         recipeIngredients.append(newIngredient)
-
+    }
+    
+    private func deleteIngredient(offsets: IndexSet) {
+        withAnimation {
+            for index in offsets {
+                recipeIngredients.remove(at:index)
+            }
+        }
     }
 }
 
