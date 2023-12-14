@@ -32,15 +32,20 @@ class ViewModel {
         fetchData()
     }
     
+    func saveRecipe(_ recipe: Recipe) {
+        try? modelContext.save()
+        
+        fetchData()
+    }
+    
     func deleteRecipe(_ recipe: Recipe) {
         modelContext.delete(recipe)
         
         fetchData()
     }
     
-    func saveRecipe(_ recipe: Recipe) {
-        try? modelContext.save()
-        
+    func deleteCategory(_ category: RecipeCategory) {
+        modelContext.delete(category)
         fetchData()
     }
     

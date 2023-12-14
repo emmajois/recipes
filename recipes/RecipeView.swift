@@ -54,6 +54,13 @@ struct RecipeView: View {
                         }
                     }
                 }
+                Section(header: Text("Edit Categories")) {
+                    NavigationLink{
+                        ManageCategoryView()
+                    } label: {
+                        Text("Edit Categories")
+                    }
+                }
             }
         } content: {
             browseAllList
