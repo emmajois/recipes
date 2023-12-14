@@ -64,17 +64,7 @@ struct AddSheetView: View {
                     .sheet(isPresented: $showingAddIngredientSheet) {
                         AddIngredientView(recipeIngredients: $recipeIngredients)
                     }
-                    List {
-                        ForEach(recipeIngredients) { ingredient in
-                            Text(ingredient.ingredientName)
-                            Text(ingredient.measurement)
-                            if let note = ingredient.note {
-                                Text(note).padding()
-                            } else {
-                                Text("").padding()
-                            }
-                        }
-                    }
+                    IngredientListView(recipeIngredients: $recipeIngredients)
                 }
                 //Instructions
                 Section(header: Text("Instructions")) {
@@ -84,12 +74,7 @@ struct AddSheetView: View {
                     .sheet(isPresented: $showingAddInstructionSheet) {
                         AddInstructionView(recipeInstructions: $recipeInstructions)
                     }
-                    List {
-                        ForEach (recipeInstructions) { instruction in
-                            Text(String(instruction.order))
-                            Text(instruction.instructionDescription)
-                        }
-                    }
+                    InstructionListView(recipeInstructions: $recipeInstructions)
                 }
                 //Categories
                 Section(header: Text("Recipe Category")){
@@ -134,8 +119,8 @@ struct AddSheetView: View {
                 recipeCalories = recipe.calories
                 recipeIsFavorite = recipe.isFavorite
                 recipeCategory = Set(recipe.categories)
-                recipeIngredients = recipe.ingredients
-                recipeInstructions = recipe.instructions
+                recipeIngredients = recipe.ingredients.sorted(by: { $0.ingredientName < $1.ingredientName })
+                recipeInstructions = recipe.instructions.sorted(by: { $0.order < $1.order })
             }
         }
     }

@@ -25,14 +25,11 @@ struct AddInstructionView: View {
                         addInstruction()
                     }
                 }
-            }
-            List {
-                ForEach (recipeInstructions) { instruction in
-                    Text(String(instruction.order))
-                    Text(instruction.instructionDescription)
+                Section {
+                    InstructionListView(recipeInstructions: $recipeInstructions)
                 }
-                .onDelete(perform: deleteInstruction)
             }
+            
             .navigationTitle(instructionTitle)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -78,13 +75,4 @@ struct AddInstructionView: View {
         
         recipeInstructions.append(newInstruction)
     }
-    
-    private func deleteInstruction(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                recipeInstructions.remove(at:index)
-            }
-        }
-    }
-
 }

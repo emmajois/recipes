@@ -30,17 +30,7 @@ struct AddIngredientView : View {
                     }
                 }
             }
-            List {
-                ForEach(recipeIngredients) { ingredient in
-                    Text("\(ingredient.ingredientName): \(ingredient.measurement)")
-                    if let note = ingredient.note {
-                        Text(note).padding()
-                    } else {
-                        Text("").padding()
-                    }
-                }
-                .onDelete(perform: deleteIngredient)
-            }
+            IngredientListView(recipeIngredients: $recipeIngredients)
             .navigationTitle(ingredientTitle)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -80,14 +70,6 @@ struct AddIngredientView : View {
         ingredientNote = ""
         
         recipeIngredients.append(newIngredient)
-    }
-    
-    private func deleteIngredient(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                recipeIngredients.remove(at:index)
-            }
-        }
     }
 }
 
