@@ -17,11 +17,14 @@ struct ManageCategoryView: View {
     var body: some View {
         Form{
             ForEach(viewModel.categories) { category in
-                Button(category.categoryName, systemImage: "pencil") {
-                    updateSelectedCategory(newSelectedCategory: category)
-                }
-                .onChange(of: selectedCategory) {
-                    isEditingCategory = selectedCategory != nil
+                HStack{
+                    Text(category.categoryName)
+                    Button("", systemImage: "pencil") {
+                        updateSelectedCategory(newSelectedCategory: category)
+                    }
+                    .onChange(of: selectedCategory) {
+                        isEditingCategory = selectedCategory != nil
+                    }
                 }
             }
             .onDelete(perform: deleteCategory)
