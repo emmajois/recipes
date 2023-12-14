@@ -10,12 +10,19 @@ import SwiftUI
 struct ManageCategoryView: View {
     @Environment(ViewModel.self) private var viewModel
     
-    @State var categoryName = ""
+    @State var categoryName: String = ""
+    @State var isEditingCategory: Bool = false
     
     var body: some View {
         List{
             ForEach(viewModel.categories) { category in
                 Text(category.categoryName)
+                Button("", systemImage: "pencil") {
+                    isEditingCategory = true
+                }
+                .sheet(isPresented: $isEditingCategory){
+                    EditCategoryView(category: category)
+                }
             }
             .onDelete(perform: deleteCategory)
         }
@@ -32,7 +39,17 @@ struct ManageCategoryView: View {
     private func addCategory() {
         let newCategory = RecipeCategory(categoryName: categoryName)
 
-        viewModel.addCategory(newCategory)
+        var isNotDuplicate = true
+        
+        viewModel.categories.forEach { category in
+            if newCategory.categoryName == category.categoryName || newCategory.categoryName.isEmpty {
+                isNotDuplicate = false
+            }
+        }
+        
+        if isNotDuplicate {
+            viewModel.addCategory(newCategory)
+        }
         
         categoryName = ""
     }
