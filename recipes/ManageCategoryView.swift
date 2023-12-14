@@ -17,9 +17,11 @@ struct ManageCategoryView: View {
     var body: some View {
         List{
             ForEach(viewModel.categories) { category in
-                //Text(category.categoryName)
                 Button(category.categoryName, systemImage: "pencil") {
                     updateSelectedCategory(newSelectedCategory: category)
+                }
+                .onChange(of: selectedCategory) {
+                    isEditingCategory = selectedCategory != nil
                 }
             }
             .onDelete(perform: deleteCategory)
@@ -39,7 +41,6 @@ struct ManageCategoryView: View {
     
     private func updateSelectedCategory(newSelectedCategory: RecipeCategory) {
         selectedCategory = newSelectedCategory
-        isEditingCategory = true
     }
     
     private func addCategory() {

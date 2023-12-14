@@ -126,9 +126,9 @@ struct RecipeView: View {
                 HStack {
                     ForEach(recipe.categories) {category in
                         VStack{
-                            Button(category.categoryName, systemImage: "star.fill") {
-                                toggleIsFavorite(recipeToToggle: recipe)
-                            }
+                            Button(category.categoryName, systemImage: "xmark.circle") {
+                                //toggleIsFavorite(recipeToToggle: recipe)
+                            }.padding()
                             //Text(category.categoryName)
                                 .background(Capsule().fill(.white).stroke(.blue))
                                 .foregroundStyle(.blue)
