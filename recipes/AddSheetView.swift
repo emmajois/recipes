@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AddSheetView: View {
+    //Environment vars
     @Environment(\.dismiss) var dismiss
     @Environment(ViewModel.self) private var viewModel
     
@@ -131,11 +132,11 @@ struct AddSheetView: View {
     }
     
     private var ingredientTitle: String {
-        recipeIngredients.count == 0 ? "Add ingredients" : "Edit ingredients"
+        recipe == nil ? "Add Ingredients" : "Edit Ingredients"
     }
     
     private var instructionTitle: String {
-        recipeIngredients.count == 0 ? "Add instructions" : "Edit instructions"
+        recipe == nil ? "Add Instructions" : "Edit Instructions"
     }
     
     //MARK: - Funcs
@@ -174,7 +175,7 @@ struct AddSheetView: View {
         viewModel.addRecipe(newRecipe)
     }
     
-    private func editRecipe(recipeToEdit: Recipe) {
+    private func editRecipe(recipeToEdit: Recipe) {        
         recipeCategory.forEach { category in
             recipeCategories.append(category)
         }
@@ -192,7 +193,7 @@ struct AddSheetView: View {
         recipeToEdit.ingredients = recipeIngredients
         recipeToEdit.instructions = recipeInstructions
         
-        viewModel.addRecipe(recipeToEdit)
+        viewModel.saveRecipe(recipeToEdit)
     }
 }
 

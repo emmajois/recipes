@@ -10,6 +10,8 @@ import SwiftUI
 struct IngredientListView: View {
     @Binding var recipeIngredients: [RecipeIngredient]
     
+    @State var isEditingIngredient = false
+    
     var body: some View {
         List {
             ForEach(recipeIngredients) { ingredient in
@@ -21,6 +23,12 @@ struct IngredientListView: View {
                     }
                 } else {
                     Text("\(ingredient.ingredientName): \(ingredient.measurement)").padding()
+                }
+                Button("", systemImage: "pencil") {
+                    isEditingIngredient = true
+                }
+                .sheet(isPresented: $isEditingIngredient){
+                    EditIngredientView(ingredient: ingredient)
                 }
             }
             .onDelete(perform: deleteIngredient)

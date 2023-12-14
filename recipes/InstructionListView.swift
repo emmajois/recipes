@@ -18,11 +18,21 @@ struct InstructionListView: View {
             .onDelete(perform: deleteInstruction)
         }
     }
-    //when deleting, go and reorder and save the new orders to them, loop that
+    
     private func deleteInstruction(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
                 recipeInstructions.remove(at:index)
+            }
+            fixOrder()
+        }
+        
+        func fixOrder() {
+            var newOrder = 1
+            
+            recipeInstructions.forEach { instruction in
+                instruction.order = newOrder
+                newOrder+=1
             }
         }
     }

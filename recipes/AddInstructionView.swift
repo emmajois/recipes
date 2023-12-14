@@ -19,8 +19,6 @@ struct AddInstructionView: View {
             Form {
                 Section(header: Text("Recipe Instructions")) {
                     TextField("Instructions", text: $instructionDescription, axis: .vertical)
-                }
-                Section {
                     Button("Add"){
                         addInstruction()
                     }
@@ -34,11 +32,6 @@ struct AddInstructionView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(action: {
-//                        if let recipe {
-//                            editRecipe(recipeToEdit: recipe)
-//                        } else {
-//                            addRecipe()
-//                        }
                         dismiss()
                     }, label: {
                             Text("Save")

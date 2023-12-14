@@ -1,20 +1,24 @@
 //
-//  AddIngredientView.swift
+//  EditIngredientView.swift
 //  recipes
 //
-//  Created by Emma Swalberg on 12/12/23.
+//  Created by Emma Swalberg on 12/13/23.
 //
 
 import SwiftUI
 
-struct AddIngredientView : View {
+struct EditIngredientView: View {
     @Environment(\.dismiss) var dismiss
     
     @State var ingredientName: String = ""
     @State var ingredientMeasurement: String = ""
     @State var ingredientNote: String = ""
     
-    @Binding var recipeIngredients: [RecipeIngredient]
+    let ingredient: RecipeIngredient
+    
+    init(ingredient: RecipeIngredient) {
+        self.ingredient = ingredient
+    }
     
     var body: some View {
         NavigationStack {
@@ -23,19 +27,13 @@ struct AddIngredientView : View {
                     TextField("Name", text: $ingredientName, axis: .vertical)
                     TextField("Measurement", text: $ingredientMeasurement, axis: .vertical)
                     TextField("Additional notes (optional): ", text: $ingredientNote, axis: .vertical)
-                    Button("Add"){
-                        addIngredient()
-                    }
-                }
-                Section{
-                    IngredientListView(recipeIngredients: $recipeIngredients)
                 }
             }
-            .navigationTitle(ingredientTitle)
+            .navigationTitle("Edit Ingredients")
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(action: {
-                        dismiss()
+                        saveIngredient()
                     }, label: {
                         Text("Save")
                     })
@@ -47,24 +45,21 @@ struct AddIngredientView : View {
                 }
             }
         }
+        .onAppear {
+            ingredientName = ingredient.ingredientName
+            ingredientMeasurement = ingredient.measurement
+            if let ingredientNotePassed = ingredient.note {
+                ingredientNote = ingredientNotePassed
+            }
+        }
     }
-    
-    private var ingredientTitle: String {
-        recipeIngredients.count == 0 ? "Add ingredients" : "Edit ingredients"
-    }
-    
-    private func addIngredient() {
-        let newIngredient = RecipeIngredient(
-            ingredientName: ingredientName,
-            measurement: ingredientMeasurement,
-            note: ingredientNote
-        )
+
+    private func saveIngredient() {
+        ingredient.ingredientName = ingredientName
+        ingredient.measurement = ingredientMeasurement
+        ingredient.note = ingredientNote
         
-        ingredientName = ""
-        ingredientMeasurement = ""
-        ingredientNote = ""
-        
-        recipeIngredients.append(newIngredient)
+        dismiss()
     }
 }
 
