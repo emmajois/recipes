@@ -18,7 +18,7 @@ struct AddInstructionView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Recipe Instructions")) {
+                Section(header: Text("Add new Instruction")) {
                     TextField("Instructions", text: $instructionDescription, axis: .vertical)
                     Stepper("Step Number: \(instructionOrder)", value: $instructionOrder, in: 0...100, step: 1)
                     Button("Add"){

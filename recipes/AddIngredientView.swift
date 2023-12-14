@@ -19,7 +19,7 @@ struct AddIngredientView : View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Recipe Ingredients")) {
+                Section(header: Text("Add New Ingredient")) {
                     TextField("Name", text: $ingredientName, axis: .vertical)
                     TextField("Measurement", text: $ingredientMeasurement, axis: .vertical)
                     TextField("Additional notes (optional): ", text: $ingredientNote, axis: .vertical)
