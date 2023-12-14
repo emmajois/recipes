@@ -17,8 +17,8 @@ struct ManageCategoryView: View {
     var body: some View {
         List{
             ForEach(viewModel.categories) { category in
-                Text(category.categoryName)
-                Button("", systemImage: "pencil") {
+                //Text(category.categoryName)
+                Button(category.categoryName, systemImage: "pencil") {
                     updateSelectedCategory(newSelectedCategory: category)
                 }
             }

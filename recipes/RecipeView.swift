@@ -123,8 +123,17 @@ struct RecipeView: View {
                 //metadata
                 //TODO: ADD METADATA TO THE VIEW
                 //categories
-                ForEach(recipe.categories) {category in
-                    Text(category.categoryName)
+                HStack {
+                    ForEach(recipe.categories) {category in
+                        VStack{
+                            Button(category.categoryName, systemImage: "star.fill") {
+                                toggleIsFavorite(recipeToToggle: recipe)
+                            }
+                            //Text(category.categoryName)
+                                .background(Capsule().fill(.white).stroke(.blue))
+                                .foregroundStyle(.blue)
+                        }
+                    }
                 }
                 //ingredients
                 Text("Ingredients")
