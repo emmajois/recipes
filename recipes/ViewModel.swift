@@ -32,6 +32,12 @@ class ViewModel {
         fetchData()
     }
     
+    func addCategory(_ category: RecipeCategory) {
+        modelContext.insert(category)
+        
+        fetchData()
+    }
+    
     func saveRecipe(_ recipe: Recipe) {
         try? modelContext.save()
         
@@ -46,6 +52,7 @@ class ViewModel {
     
     func deleteCategory(_ category: RecipeCategory) {
         modelContext.delete(category)
+        
         fetchData()
     }
     
