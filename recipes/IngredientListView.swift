@@ -50,13 +50,6 @@ struct IngredientListView: View {
                         }
                     }
                 }
-//                Button("", systemImage: "pencil") {
-//                    selectedIngredient = ingredient
-//                    isEditingIngredient = true
-//                }
-//                .onChange(of: selectedIngredient) {
-//                    isEditingIngredient = selectedIngredient != nil
-//                }
             }
             .onDelete(perform: deleteIngredient)
             .sheet(isPresented: $isEditingIngredient){

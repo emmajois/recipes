@@ -10,6 +10,8 @@ import SwiftUI
 struct InstructionListView: View {
     @Binding var recipeInstructions : [RecipeInstruction]
     
+    @State var selectedIngredient : RecipeInstruction? = nil
+    
     var body: some View {
         List {
             ForEach (recipeInstructions) { instruction in

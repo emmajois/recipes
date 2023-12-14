@@ -27,6 +27,16 @@ struct EditCategoryView: View {
                 Section(header: Text("Edit Category")){
                     TextField("Category Name", text: $categoryName)
                 }
+                if category.recipes != [] {
+                    Section(header: Text("Remove Recipes")){
+                        List{
+                            ForEach(category.recipes){ recipe in
+                                Text(recipe.title)
+                            }
+                            .onDelete(perform: deleteRecipe)
+                        }
+                    }
+                }
             }
             .navigationTitle("Edit Category")
             .toolbar {
@@ -49,6 +59,16 @@ struct EditCategoryView: View {
         .onAppear{
             categoryName = category.categoryName
         }
+    }
+    
+    private func deleteRecipe(offsets: IndexSet) {
+        withAnimation {
+            for index in offsets {
+                category.recipes.remove(at:index)
+            }
+        }
+        
+        viewModel.saveCategory()
     }
     
     private func updateCategory() {
