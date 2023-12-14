@@ -106,9 +106,20 @@ struct RecipeView: View {
         ScrollView {
             VStack {
                 //title
-                Text(recipe.title)
-                    .font(.title)
-                .padding()
+                HStack{
+                    Text(recipe.title)
+                        .font(.title)
+                    .padding()
+                    if recipe.isFavorite {
+                        Button("", systemImage: "star.fill") {
+                            toggleIsFavorite(recipeToToggle: recipe)
+                        }
+                    } else {
+                        Button("", systemImage: "star") {
+                            toggleIsFavorite(recipeToToggle: recipe)
+                        }
+                    }
+                }
                 //metadata
                 //TODO: ADD METADATA TO THE VIEW
                 //categories
@@ -150,6 +161,12 @@ struct RecipeView: View {
                 AddSheetView(recipe: recipe)
             }
         }
+    }
+    
+    private func toggleIsFavorite(recipeToToggle: Recipe) {
+        recipeToToggle.isFavorite.toggle()
+        
+        viewModel.saveRecipe()
     }
     
     // MARK: - Variables

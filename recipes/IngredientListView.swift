@@ -11,6 +11,7 @@ struct IngredientListView: View {
     @Binding var recipeIngredients: [RecipeIngredient]
     
     @State var isEditingIngredient = false
+    @State var selectedIngredient : RecipeIngredient? = nil
     
     var body: some View {
         List {
@@ -25,13 +26,14 @@ struct IngredientListView: View {
                     Text("\(ingredient.ingredientName): \(ingredient.measurement)").padding()
                 }
                 Button("", systemImage: "pencil") {
+                    selectedIngredient = ingredient
                     isEditingIngredient = true
-                }
-                .sheet(isPresented: $isEditingIngredient){
-                    EditIngredientView(ingredient: ingredient)
                 }
             }
             .onDelete(perform: deleteIngredient)
+            .sheet(isPresented: $isEditingIngredient){
+                EditIngredientView(ingredient: selectedIngredient)
+            }
         }
     }
     

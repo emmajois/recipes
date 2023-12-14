@@ -19,8 +19,7 @@ struct ManageCategoryView: View {
             ForEach(viewModel.categories) { category in
                 Text(category.categoryName)
                 Button("", systemImage: "pencil") {
-                    selectedCategory = category
-                    isEditingCategory = true
+                    updateSelectedCategory(newSelectedCategory: category)
                 }
             }
             .onDelete(perform: deleteCategory)
@@ -36,6 +35,11 @@ struct ManageCategoryView: View {
                 }
             }
         }
+    }
+    
+    private func updateSelectedCategory(newSelectedCategory: RecipeCategory) {
+        selectedCategory = newSelectedCategory
+        isEditingCategory = true
     }
     
     private func addCategory() {

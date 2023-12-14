@@ -14,9 +14,9 @@ struct EditIngredientView: View {
     @State var ingredientMeasurement: String = ""
     @State var ingredientNote: String = ""
     
-    let ingredient: RecipeIngredient
+    let ingredient: RecipeIngredient?
     
-    init(ingredient: RecipeIngredient) {
+    init(ingredient: RecipeIngredient?) {
         self.ingredient = ingredient
     }
     
@@ -46,18 +46,22 @@ struct EditIngredientView: View {
             }
         }
         .onAppear {
-            ingredientName = ingredient.ingredientName
-            ingredientMeasurement = ingredient.measurement
-            if let ingredientNotePassed = ingredient.note {
-                ingredientNote = ingredientNotePassed
+            if let ingredient {
+                ingredientName = ingredient.ingredientName
+                ingredientMeasurement = ingredient.measurement
+                if let ingredientNotePassed = ingredient.note {
+                    ingredientNote = ingredientNotePassed
+                }
             }
         }
     }
 
     private func saveIngredient() {
-        ingredient.ingredientName = ingredientName
-        ingredient.measurement = ingredientMeasurement
-        ingredient.note = ingredientNote
+        if let ingredient {
+            ingredient.ingredientName = ingredientName
+            ingredient.measurement = ingredientMeasurement
+            ingredient.note = ingredientNote
+        }
         
         dismiss()
     }
