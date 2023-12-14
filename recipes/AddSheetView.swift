@@ -193,7 +193,7 @@ struct AddSheetView: View {
         recipeToEdit.ingredients = recipeIngredients
         recipeToEdit.instructions = recipeInstructions
         
-        viewModel.saveRecipe()
+        viewModel.saveData()
     }
 }
 

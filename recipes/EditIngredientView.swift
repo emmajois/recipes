@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EditIngredientView: View {
+    @Environment(ViewModel.self) private var viewModel
     @Environment(\.dismiss) var dismiss
     
     @State var ingredientName: String = ""
@@ -58,6 +59,8 @@ struct EditIngredientView: View {
         ingredient.ingredientName = ingredientName
         ingredient.measurement = ingredientMeasurement
         ingredient.note = ingredientNote
+        
+        viewModel.saveData()
         
         dismiss()
     }

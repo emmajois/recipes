@@ -10,15 +10,33 @@ import SwiftUI
 struct InstructionListView: View {
     @Binding var recipeInstructions : [RecipeInstruction]
     
-    @State var selectedIngredient : RecipeInstruction? = nil
+    @State var isEditingInstruction : Bool = false 
+    @State var selectedInstruction : RecipeInstruction? = nil
     
     var body: some View {
         List {
             ForEach (recipeInstructions) { instruction in
-                Text(String("\(instruction.order). \(instruction.instructionDescription)"))
+                HStack{
+                    Text(String("\(instruction.order). \(instruction.instructionDescription)"))
+                    Button("", systemImage: "pencil") {
+                        updateSelectedInstruction(newSelectedInstruction: instruction)
+                    }
+                    .onChange(of: selectedInstruction) {
+                        isEditingInstruction = selectedInstruction != nil
+                    }
+                }
             }
             .onDelete(perform: deleteInstruction)
+            .sheet(isPresented: $isEditingInstruction){
+                if let selectedInstruction {
+                    EditInstructionView(instruction: selectedInstruction)
+                }
+            }
         }
+    }
+    
+    private func updateSelectedInstruction(newSelectedInstruction: RecipeInstruction) {
+        selectedInstruction = newSelectedInstruction
     }
     
     private func deleteInstruction(offsets: IndexSet) {

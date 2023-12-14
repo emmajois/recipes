@@ -38,13 +38,7 @@ class ViewModel {
         fetchData()
     }
     
-    func saveRecipe() {
-        try? modelContext.save()
-        
-        fetchData()
-    }
-    
-    func saveCategory() {
+    func saveData() {
         try? modelContext.save()
         
         fetchData()

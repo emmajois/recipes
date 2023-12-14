@@ -4,7 +4,7 @@
 //
 //  Created by Emma Swalberg on 12/13/23.
 //
-// Figured out how to edit but it causes a little error: https://stackoverflow.com/questions/61176412/can-t-pass-data-correctly-to-modal-presentation-using-foreach-and-coredata-in-sw
+// Figured out how to bring up an edit sheet in the correct place: https://stackoverflow.com/questions/61176412/can-t-pass-data-correctly-to-modal-presentation-using-foreach-and-coredata-in-sw
 
 import SwiftUI
 
@@ -68,12 +68,12 @@ struct EditCategoryView: View {
             }
         }
         
-        viewModel.saveCategory()
+        viewModel.saveData()
     }
     
     private func updateCategory() {
         category.categoryName = categoryName
         
-        viewModel.saveCategory()
+        viewModel.saveData()
     }
 }

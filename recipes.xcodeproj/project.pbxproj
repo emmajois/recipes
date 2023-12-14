@@ -163,6 +163,8 @@
 			isa = PBXGroup;
 			children = (
 				26EB3E192B280435002F08F7 /* EmmasRecipes.swift */,
+				26EC63A42B29577C00C0C1F5 /* MultiSelector.swift */,
+				26EC63A62B295AE800C0C1F5 /* MultiSelectionView.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -194,11 +196,9 @@
 				2659772F2B2A7CA600D33EE7 /* IngredientListView.swift */,
 				26EC63A22B28C6DF00C0C1F5 /* AddInstructionView.swift */,
 				265977312B2A7EDE00D33EE7 /* InstructionListView.swift */,
-				26EC63A42B29577C00C0C1F5 /* MultiSelector.swift */,
-				26EC63A62B295AE800C0C1F5 /* MultiSelectionView.swift */,
+				266699332B2BC3FC00051891 /* EditInstructionView.swift */,
 				265977352B2AB5D400D33EE7 /* ManageCategoryView.swift */,
 				265977372B2ABC9B00D33EE7 /* EditCategoryView.swift */,
-				266699332B2BC3FC00051891 /* EditInstructionView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";

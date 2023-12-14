@@ -11,6 +11,7 @@ struct AddInstructionView: View {
     @Environment(\.dismiss) var dismiss
     
     @State var instructionDescription: String = ""
+    @State var instructionOrder: Int = 0
     
     @Binding var recipeInstructions: [RecipeInstruction]
     
@@ -19,6 +20,7 @@ struct AddInstructionView: View {
             Form {
                 Section(header: Text("Recipe Instructions")) {
                     TextField("Instructions", text: $instructionDescription, axis: .vertical)
+                    Stepper("Step Number: \(instructionOrder)", value: $instructionOrder, in: 0...100, step: 1)
                     Button("Add"){
                         addInstruction()
                     }
@@ -51,20 +53,13 @@ struct AddInstructionView: View {
     }
     
     private func addInstruction() {
-        var order: Int {
-            if recipeInstructions.count == 0 {
-                    return 1
-                } else {
-                    return recipeInstructions.count + 1
-                }
-            }
-        
         let newInstruction = RecipeInstruction(
                 instructionDescription: instructionDescription,
-                order: order
+                order: instructionOrder
             )
         
         instructionDescription = ""
+        instructionOrder+=1
         
         recipeInstructions.append(newInstruction)
     }

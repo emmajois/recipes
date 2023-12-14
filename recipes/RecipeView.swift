@@ -175,7 +175,7 @@ struct RecipeView: View {
     private func toggleIsFavorite(recipeToToggle: Recipe) {
         recipeToToggle.isFavorite.toggle()
         
-        viewModel.saveRecipe()
+        viewModel.saveData()
     }
     
     // MARK: - Variables
