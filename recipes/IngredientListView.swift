@@ -18,20 +18,45 @@ struct IngredientListView: View {
             ForEach(recipeIngredients) { ingredient in
                 if let note = ingredient.note {
                     if note.isEmpty {
-                        Text("\(ingredient.ingredientName): \(ingredient.measurement)").padding()
+                        HStack{
+                            Text("\(ingredient.ingredientName): \(ingredient.measurement)")
+                            Button("", systemImage: "pencil") {
+                                editIngredient(ingredient: ingredient)
+                            }
+                            .onChange(of: selectedIngredient) {
+                                isEditingIngredient = selectedIngredient != nil
+                            }
+                        }
+                        
                     } else {
-                        Text("\(ingredient.ingredientName): \(ingredient.measurement) - \(note)").padding()
+                        HStack{
+                            Text("\(ingredient.ingredientName): \(ingredient.measurement) - \(note)")
+                            Button("", systemImage: "pencil") {
+                                editIngredient(ingredient: ingredient)
+                            }
+                            .onChange(of: selectedIngredient) {
+                                isEditingIngredient = selectedIngredient != nil
+                            }
+                        }
                     }
                 } else {
-                    Text("\(ingredient.ingredientName): \(ingredient.measurement)").padding()
+                    HStack{
+                        Text("\(ingredient.ingredientName): \(ingredient.measurement)")
+                        Button("", systemImage: "pencil") {
+                            editIngredient(ingredient: ingredient)
+                        }
+                        .onChange(of: selectedIngredient) {
+                            isEditingIngredient = selectedIngredient != nil
+                        }
+                    }
                 }
-                Button("", systemImage: "pencil") {
-                    selectedIngredient = ingredient
-                    isEditingIngredient = true
-                }
-                .onChange(of: selectedIngredient) {
-                    isEditingIngredient = selectedIngredient != nil
-                }
+//                Button("", systemImage: "pencil") {
+//                    selectedIngredient = ingredient
+//                    isEditingIngredient = true
+//                }
+//                .onChange(of: selectedIngredient) {
+//                    isEditingIngredient = selectedIngredient != nil
+//                }
             }
             .onDelete(perform: deleteIngredient)
             .sheet(isPresented: $isEditingIngredient){
@@ -40,6 +65,11 @@ struct IngredientListView: View {
                 }
             }
         }
+    }
+    
+    private func editIngredient(ingredient: RecipeIngredient) {
+        selectedIngredient = ingredient
+        isEditingIngredient = true
     }
     
     private func deleteIngredient(offsets: IndexSet) {
