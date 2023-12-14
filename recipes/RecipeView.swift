@@ -39,7 +39,7 @@ struct RecipeView: View {
                         Label("Search", systemImage: "magnifyingglass")
                     }
                     NavigationLink {
-                        Text("All favorites")
+                        browseFavoriteList
                     } label: {
                         Label("Favorites", systemImage: "star.fill")
                     }
@@ -95,60 +95,62 @@ struct RecipeView: View {
         }
     }
     
-// MARK: - Variables
+    private func detailView(for recipe: Recipe) -> some View {
+        ScrollView {
+            VStack {
+                //title
+                Text(recipe.title)
+                    .font(.title)
+                .padding()
+                //metadata
+                //TODO: ADD METADATA TO THE VIEW
+                //categories
+                ForEach(recipe.categories) {category in
+                    Text(category.categoryName)
+                }
+                //ingredients
+                Text("Ingredients")
+                    .font(.subheadline)
+                if recipe.ingredients.count > 0 {
+                    ForEach(recipe.ingredients.sorted(by: { $0.ingredientName < $1.ingredientName })) { ingredient in
+                        Text("\(ingredient.ingredientName): \(ingredient.measurement)")
+                    }
+                } else {
+                    Text("No ingredients!").padding()
+                }
+                //instructions
+                Text("Instructions")
+                    .font(.subheadline)
+                if recipe.instructions.count > 0 {
+                    ForEach(recipe.instructions.sorted(by: { $0.order < $1.order })) { instruction in
+                        Text("\(instruction.order): \(instruction.instructionDescription)")
+                    }
+                } else {
+                    Text("No instructions!").padding()
+                }
+
+            }
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button(action: {
+                        isEditing = true
+                    }, label: {
+                        Label("Edit Item", systemImage: "pencil")
+                    })
+                }
+            }
+            .sheet(isPresented: $isEditing){
+                AddSheetView(recipe: recipe)
+            }
+        }
+    }
+    
+    // MARK: - Variables
     private var browseAllList: some View {
         List {
             ForEach(viewModel.recipes) { recipe in
                 NavigationLink {
-                    //Individual Recipe Content
-                    ScrollView {
-                        VStack {
-                            //title
-                            Text(recipe.title)
-                                .font(.title)
-                            .padding()
-                            //metadata
-                            //categories
-                            ForEach(recipe.categories) {category in
-                                Text(category.categoryName)
-                            }
-                            //ingredients
-                            //TODO: - Order the lists both inside and outside
-                            Text("Ingredients")
-                                .font(.subheadline)
-                            if recipe.ingredients.count > 0 {
-                                ForEach(recipe.ingredients.sorted(by: { $0.ingredientName < $1.ingredientName })) { ingredient in
-                                    Text("\(ingredient.ingredientName): \(ingredient.measurement)")
-                                }
-                            } else {
-                                Text("No ingredients!").padding()
-                            }
-                            //instructions
-                            //TODO: - Order the lists both inside and outside
-                            Text("Instructions")
-                                .font(.subheadline)
-                            if recipe.instructions.count > 0 {
-                                ForEach(recipe.instructions.sorted(by: { $0.order < $1.order })) { instruction in
-                                    Text("\(instruction.order): \(instruction.instructionDescription)")
-                                }
-                            } else {
-                                Text("No instructions!").padding()
-                            }
-
-                        }
-                        .toolbar {
-                            ToolbarItem(placement: .primaryAction) {
-                                Button(action: {
-                                    isEditing = true
-                                }, label: {
-                                    Label("Edit Item", systemImage: "pencil")
-                                })
-                            }
-                        }
-                        .sheet(isPresented: $isEditing){
-                            AddSheetView(recipe: recipe)
-                        }
-                    }
+                    detailView(for: recipe)
                 } label: {
                     Text(recipe.title)
                 }
@@ -167,6 +169,19 @@ struct RecipeView: View {
                     AddSheetView(recipe: nil)
                 }
             }
+        }
+    }
+    
+    private var browseFavoriteList: some View {
+        List {
+            ForEach(viewModel.favoriteRecipes) { recipe in
+                NavigationLink {
+                    detailView(for: recipe)
+                } label: {
+                    Text(recipe.title)
+                }
+            }
+            .onDelete(perform: deleteRecipes)
         }
     }
 }

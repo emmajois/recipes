@@ -23,6 +23,7 @@ class ViewModel {
     private(set) var recipes: [Recipe] = []
     private(set) var filteredRecipes: [Recipe] = []
     private(set) var categories: [RecipeCategory] = []
+    private(set) var favoriteRecipes: [Recipe] = []
     
     //MARK: - User intents
     func addRecipe(_ recipe: Recipe) {
@@ -81,6 +82,7 @@ class ViewModel {
     private func fetchData() {
         fetchRecipes()
         fetchFilteredRecipes()
+        fetchFavoriteRecipes()
         fetchCategories()
     }
     
@@ -94,6 +96,18 @@ class ViewModel {
             filteredRecipes = try modelContext.fetch(descriptor)
         } catch {
             print("Failed to load filtered recipes")
+        }
+    }
+    private func fetchFavoriteRecipes() {
+        do {
+            let descriptor = FetchDescriptor<Recipe>(
+                predicate: #Predicate<Recipe> {$0.isFavorite},
+                sortBy: [SortDescriptor(\.title)]
+            )
+            
+            favoriteRecipes = try modelContext.fetch(descriptor)
+        } catch {
+            print("Failed to load favorite recipes")
         }
     }
     
