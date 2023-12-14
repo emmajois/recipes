@@ -12,19 +12,21 @@ struct ManageCategoryView: View {
     
     @State var categoryName: String = ""
     @State var isEditingCategory: Bool = false
+    @State var selectedCategory: RecipeCategory? = nil
     
     var body: some View {
         List{
             ForEach(viewModel.categories) { category in
                 Text(category.categoryName)
                 Button("", systemImage: "pencil") {
+                    selectedCategory = category
                     isEditingCategory = true
-                }
-                .sheet(isPresented: $isEditingCategory){
-                    EditCategoryView(category: category)
                 }
             }
             .onDelete(perform: deleteCategory)
+            .sheet(isPresented: $isEditingCategory){
+                EditCategoryView(category: selectedCategory)
+            }
         }
         Form {
             Section(header: Text("New Category")){
