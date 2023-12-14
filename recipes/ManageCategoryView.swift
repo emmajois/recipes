@@ -15,7 +15,7 @@ struct ManageCategoryView: View {
     @State var selectedCategory: RecipeCategory? = nil
     
     var body: some View {
-        List{
+        Form{
             ForEach(viewModel.categories) { category in
                 Button(category.categoryName, systemImage: "pencil") {
                     updateSelectedCategory(newSelectedCategory: category)
@@ -26,10 +26,10 @@ struct ManageCategoryView: View {
             }
             .onDelete(perform: deleteCategory)
             .sheet(isPresented: $isEditingCategory){
-                EditCategoryView(category: selectedCategory)
+                if let selectedCategory {
+                    EditCategoryView(category: selectedCategory)
+                }
             }
-        }
-        Form {
             Section(header: Text("New Category")){
                 TextField("Category Name", text: $categoryName)
                 Button("Add"){

@@ -12,12 +12,12 @@ struct EditCategoryView: View {
     @Environment(ViewModel.self) private var viewModel
     @Environment(\.dismiss) var dismiss
     
-    let category : RecipeCategory?
+    let category : RecipeCategory
     
     @State var categoryName: String = ""
     
     
-    init(category: RecipeCategory?) {
+    init(category: RecipeCategory) {
         self.category = category
     }
     
@@ -47,16 +47,12 @@ struct EditCategoryView: View {
             
         }
         .onAppear{
-            if let category {
-                categoryName = category.categoryName
-            }
+            categoryName = category.categoryName
         }
     }
     
     private func updateCategory() {
-        if let category {
-            category.categoryName = categoryName
-        }
+        category.categoryName = categoryName
         
         viewModel.saveCategory()
     }
