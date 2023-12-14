@@ -35,7 +35,9 @@ struct IngredientListView: View {
             }
             .onDelete(perform: deleteIngredient)
             .sheet(isPresented: $isEditingIngredient){
-                EditIngredientView(ingredient: selectedIngredient)
+                if let selectedIngredient {
+                    EditIngredientView(ingredient: selectedIngredient)
+                }
             }
         }
     }
