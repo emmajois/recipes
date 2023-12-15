@@ -29,7 +29,7 @@ struct RecipeView: View {
                 // a section for browse, search, favorites
                 Section(header: Text("Actions")) {
                     NavigationLink {
-                        browseAllList
+                        recipeListView(for: viewModel.recipes)
                     } label: {
                         Label("Browse All", systemImage: "list.bullet")
                     }
@@ -63,7 +63,7 @@ struct RecipeView: View {
                 }
             }
         } content: {
-            browseAllList
+            recipeListView(for: viewModel.recipes)
 
         } detail: {
             Text("Select a recipe")
@@ -98,6 +98,32 @@ struct RecipeView: View {
         withAnimation {
             for index in offsets {
                 viewModel.deleteRecipe(viewModel.recipes[index])
+            }
+        }
+    }
+    
+    private func recipeListView(for recipeList: [Recipe]) -> some View {
+        List {
+            ForEach(recipeList) { recipe in
+                NavigationLink {
+                    detailView(for: recipe)
+                } label: {
+                    Text(recipe.title)
+                }
+            }
+            .onDelete(perform: deleteRecipes)
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                EditButton()
+            }
+            ToolbarItem {
+                Button(action: openAddRecipeSheet) {
+                    Label("Add Recipe", systemImage: "plus")
+                }
+                .sheet(isPresented: $showingAddRecipeSheet) {
+                    AddSheetView(recipe: nil)
+                }
             }
         }
     }
@@ -179,9 +205,35 @@ struct RecipeView: View {
     }
     
     // MARK: - Variables
-    private var browseAllList: some View {
+//    private var browseAllList: some View {
+//        List {
+//            ForEach(viewModel.recipes) { recipe in
+//                NavigationLink {
+//                    detailView(for: recipe)
+//                } label: {
+//                    Text(recipe.title)
+//                }
+//            }
+//            .onDelete(perform: deleteRecipes)
+//        }
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarTrailing) {
+//                EditButton()
+//            }
+//            ToolbarItem {
+//                Button(action: openAddRecipeSheet) {
+//                    Label("Add Recipe", systemImage: "plus")
+//                }
+//                .sheet(isPresented: $showingAddRecipeSheet) {
+//                    AddSheetView(recipe: nil)
+//                }
+//            }
+//        }
+//    }
+    
+    private var browseFavoriteList: some View {
         List {
-            ForEach(viewModel.recipes) { recipe in
+            ForEach(viewModel.favoriteRecipes) { recipe in
                 NavigationLink {
                     detailView(for: recipe)
                 } label: {
@@ -190,24 +242,11 @@ struct RecipeView: View {
             }
             .onDelete(perform: deleteRecipes)
         }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                EditButton()
-            }
-            ToolbarItem {
-                Button(action: openAddRecipeSheet) {
-                    Label("Add Recipe", systemImage: "plus")
-                }
-                .sheet(isPresented: $showingAddRecipeSheet) {
-                    AddSheetView(recipe: nil)
-                }
-            }
-        }
     }
     
-    private var browseFavoriteList: some View {
+    private var browseCategoryList: some View {
         List {
-            ForEach(viewModel.favoriteRecipes) { recipe in
+            ForEach(viewModel.recipeByCategory) { recipe in
                 NavigationLink {
                     detailView(for: recipe)
                 } label: {

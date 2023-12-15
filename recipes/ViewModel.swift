@@ -24,6 +24,7 @@ class ViewModel {
     private(set) var filteredRecipes: [Recipe] = []
     private(set) var categories: [RecipeCategory] = []
     private(set) var favoriteRecipes: [Recipe] = []
+    private(set) var recipeByCategory: [Recipe] = []
     
     //MARK: - User intents
     func addRecipe(_ recipe: Recipe) {
