@@ -136,6 +136,17 @@
 			name = Categories;
 			sourceTree = "<group>";
 		};
+		266699402B2BFECC00051891 /* NavigationPages */ = {
+			isa = PBXGroup;
+			children = (
+				26EC639E2B28C14B00C0C1F5 /* AddSheetView.swift */,
+				2666993C2B2BFB2F00051891 /* RecipeDetailView.swift */,
+				2666993E2B2BFD8000051891 /* RecipeListView.swift */,
+				266699382B2BEC2300051891 /* SearchPageView.swift */,
+			);
+			name = NavigationPages;
+			sourceTree = "<group>";
+		};
 		26B898612B0DAA930011142B = {
 			isa = PBXGroup;
 			children = (
@@ -223,15 +234,12 @@
 		26F4E7852B27A0C5004E889B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				266699402B2BFECC00051891 /* NavigationPages */,
 				266699372B2BCD5A00051891 /* Categories */,
 				266699352B2BCD1100051891 /* Ingredients */,
 				266699362B2BCD3000051891 /* Instructions */,
 				26B8986D2B0DAA930011142B /* recipesApp.swift */,
 				26BA9FB52B1BEE5C006BBA34 /* RecipeView.swift */,
-				26EC639E2B28C14B00C0C1F5 /* AddSheetView.swift */,
-				266699382B2BEC2300051891 /* SearchPageView.swift */,
-				2666993C2B2BFB2F00051891 /* RecipeDetailView.swift */,
-				2666993E2B2BFD8000051891 /* RecipeListView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";

@@ -15,13 +15,13 @@ struct RecipeDetailView: View {
     var recipe: Recipe
     
     var body: some View {
-            ScrollView {
-                VStack {
-                    //title
+        ScrollView {
+            VStack {
+                //title
+                VStack{
                     HStack{
                         Text(recipe.title)
                             .font(.title)
-                        .padding()
                         if recipe.isFavorite {
                             Button("", systemImage: "star.fill") {
                                 toggleIsFavorite(recipeToToggle: recipe)
@@ -32,60 +32,111 @@ struct RecipeDetailView: View {
                             }
                         }
                     }
-                    //metadata
-                    //TODO: ADD METADATA TO THE VIEW
-                    //categories
-                    HStack {
-                        ForEach(recipe.categories) {category in
-                            VStack{
-                                Button(category.categoryName, systemImage: "xmark.circle") {
-                                    //toggleIsFavorite(recipeToToggle: recipe)
-                                }.padding()
-                                //Text(category.categoryName)
-                                    .background(Capsule().fill(.white).stroke(.blue))
-                                    .foregroundStyle(.blue)
-                            }
+                    .padding()
+                    Text("By: \(recipe.author)")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text("Added on: \(recipe.date.formatted(.dateTime.day().month().year()))")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .padding()
+                //categories
+                HStack {
+                    ForEach(recipe.categories) {category in
+                        VStack{
+                            Button(category.categoryName, systemImage: "xmark.circle") {
+                                deleteCategory(categoryToDelete: category)
+                            }.padding()
+                            //Text(category.categoryName)
+                                .background(Capsule().fill(.white).stroke(.blue))
+                                .foregroundStyle(.blue)
                         }
                     }
-                    //ingredients
+                }
+                //metadata
+                VStack{
+                    Text("Recipe Information")
+                        .font(.headline)
+                    Text("Preperation Time: \(recipe.prepTime)")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text("Cook Time: \(recipe.cookTime)")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text("Calories per Serving: \(recipe.calories)")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text("Servings: \(recipe.servings)")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text("Expertise Required: \(recipe.expertise)")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding()
+                //ingredients
+                VStack {
                     Text("Ingredients")
-                        .font(.subheadline)
+                        .font(.headline)
                     if recipe.ingredients.count > 0 {
                         ForEach(recipe.ingredients.sorted(by: { $0.ingredientName < $1.ingredientName })) { ingredient in
-                            Text("\(ingredient.ingredientName): \(ingredient.measurement)")
+                            if let note = ingredient.note {
+                                if note.isEmpty {
+                                    Text("\(ingredient.ingredientName): \(ingredient.measurement)")
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                } else {
+                                    Text("\(ingredient.ingredientName): \(ingredient.measurement) - \(note)")
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                            } else {
+                                Text("\(ingredient.ingredientName): \(ingredient.measurement)")
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                         }
                     } else {
                         Text("No ingredients!").padding()
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    //instructions
+                }
+                .padding()
+                //instructions
+                VStack{
                     Text("Instructions")
-                        .font(.subheadline)
+                        .font(.headline)
                     if recipe.instructions.count > 0 {
                         ForEach(recipe.instructions.sorted(by: { $0.order < $1.order })) { instruction in
                             Text("\(instruction.order): \(instruction.instructionDescription)")
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     } else {
                         Text("No instructions!").padding()
-                    }
-
-                }
-                .toolbar {
-                    ToolbarItem(placement: .primaryAction) {
-                        Button(action: {
-                            isEditing = true
-                        }, label: {
-                            Label("Edit Item", systemImage: "pencil")
-                        })
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
-                .sheet(isPresented: $isEditing){
-                    AddSheetView(recipe: recipe)
+                .padding()
+            }
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button(action: {
+                        isEditing = true
+                    }, label: {
+                        Label("Edit Item", systemImage: "pencil")
+                    })
                 }
             }
+            .sheet(isPresented: $isEditing) {
+                AddSheetView(recipe: recipe)
+            }
         }
+    }
     
+    //MARK: - Functions
     private func toggleIsFavorite(recipeToToggle: Recipe) {
         recipeToToggle.isFavorite.toggle()
+        
+        viewModel.saveData()
+    }
+    
+    private func deleteCategory(categoryToDelete: RecipeCategory) {
+        recipe.categories.removeAll { category in
+            category == categoryToDelete
+        }
         
         viewModel.saveData()
     }
