@@ -66,6 +66,66 @@ let emmaSampleRecipes = [
             RecipeInstruction(instructionDescription: "Season with salt and pepper to taste. Top with grated cheese.", order: 5)
         ],
         categories: []
+    ),
+    Recipe(title: "Pumpkin Bars",
+           author: "Grandma Louise",
+           date: Date.now,
+           prepTime: 30,
+           cookTime: 30,
+           servings: 8,
+           expertise: 2,
+           calories: 300,
+           isFavorite: true,
+           ingredients: [
+                RecipeIngredient(ingredientName: "Canned Pumpkin", measurement: "2 Cups", note: "Libby's Brand"),
+                RecipeIngredient(ingredientName: "Cooking Oil", measurement: "1/4 Cup", note: nil),
+                RecipeIngredient(ingredientName: "Eggs", measurement: "4", note: nil),
+                RecipeIngredient(ingredientName: "Flour", measurement: "2 Cups", note: nil),
+                RecipeIngredient(ingredientName: "Cinnamon", measurement: "2 teaspoons", note: nil),
+                RecipeIngredient(ingredientName: "Salt", measurement: "1 teaspoon", note: nil),
+                RecipeIngredient(ingredientName: "Baking Powder", measurement: "2 teaspoons", note: nil),
+                RecipeIngredient(ingredientName: "Baking Soda", measurement: "1 teaspoon", note: nil),
+                RecipeIngredient(ingredientName: "Sugar", measurement: "1 & 1/2 Cups", note: nil),
+                RecipeIngredient(ingredientName: "Chocolate Chips", measurement: "Half a Bag", note: nil),
+                RecipeIngredient(ingredientName: "Cinnamon Sugar", measurement: "1/2 Cup", note: "enough to cover")
+           ],
+           instructions: [
+                RecipeInstruction(instructionDescription: "Preheat oven to 350 Degrees.", order: 1),
+                RecipeInstruction(instructionDescription: "Combine the wet ingredients in your mixer.", order: 2),
+                RecipeInstruction(instructionDescription: "Combine all the dry ingredients in a seperate bowl and slowly add to the wet mix.", order: 3),
+                RecipeInstruction(instructionDescription: "Once just combined, pour into a greased 15x10x1 inch pan (cookie sheet with an edge).", order: 4),
+                RecipeInstruction(instructionDescription: "Sprinkle Liberally with the cinnamon sugar. (Put so much on it so it can't soak in.", order: 5),
+                RecipeInstruction(instructionDescription: "Bake for 25-30 minutes or until a toothpick comes out clean.", order: 6)
+           ],
+           categories: []
+    ),
+    Recipe(title: "Pumpkin Waffles",
+           author: "Emma Joi",
+           date: Date.now,
+           prepTime: 10,
+           cookTime: 30,
+           servings: 8,
+           expertise: 2,
+           calories: 350,
+           isFavorite: false,
+           ingredients: [
+                RecipeIngredient(ingredientName: "Flour", measurement: "2 Cups", note: nil),
+                RecipeIngredient(ingredientName: "Brown Sugar", measurement: "1/2 Cup", note: "packed"),
+                RecipeIngredient(ingredientName: "Baking Powder", measurement: "2 & 1/4 teaspoons", note: nil),
+                RecipeIngredient(ingredientName: "Cinnamon", measurement: "1 & 1/2 teaspoons", note: nil),
+                RecipeIngredient(ingredientName: "Salt", measurement: "1 teaspoon", note: nil),
+                RecipeIngredient(ingredientName: "Eggs", measurement: "2", note: nil),
+                RecipeIngredient(ingredientName: "Milk", measurement: "1 & 1/2 Cups", note: nil),
+                RecipeIngredient(ingredientName: "Canola Oil", measurement: "3 Tablespoons", note: nil),
+                RecipeIngredient(ingredientName: "Canned Pumpkin", measurement: "1 Cup", note: nil)
+           ],
+           instructions: [
+                RecipeInstruction(instructionDescription: "Mix all of the dry ingredients together.", order: 1),
+                RecipeInstruction(instructionDescription: "In a seperate bowl combine all the wet ingredients.", order: 2),
+                RecipeInstruction(instructionDescription: "Pour the dry ingredients in the bowl with the wet ingredients and mix together.", order: 3),
+                RecipeInstruction(instructionDescription: "Spray the inside of the waffle iron on the top and bottom and cook the waffles.", order: 4)
+           ],
+           categories: []
     )
 ]
 
@@ -83,6 +143,9 @@ let sampleAssociations = [
     ("Black Bean Salsa", "Dinner"),
     ("Black Bean Salsa", "Appetizer"),
     ("Potato Leek Soup", "Dinner"),
-    ("Potato Leek Soup", "Appetizer")
+    ("Potato Leek Soup", "Appetizer"),
+    ("Pumpkin Bars", "Dessert"),
+    ("Pumpkin Waffles", "Breakfast"),
+    ("Pumpkin Waffles", "Dessert")
 ]
 

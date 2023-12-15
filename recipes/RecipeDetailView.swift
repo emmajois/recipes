@@ -61,15 +61,15 @@ struct RecipeDetailView: View {
                 VStack{
                     Text("Recipe Information")
                         .font(.headline)
-                    Text("Preperation Time: \(recipe.prepTime)")
+                    Text("Preperation Time: \(recipe.prepTime) minutes")
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    Text("Cook Time: \(recipe.cookTime)")
+                    Text("Cook Time: \(recipe.cookTime) minutes")
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Text("Calories per Serving: \(recipe.calories)")
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Text("Servings: \(recipe.servings)")
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    Text("Expertise Required: \(recipe.expertise)")
+                    Text("Expertise Required: Level\(recipe.expertise)")
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
