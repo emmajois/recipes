@@ -34,7 +34,7 @@ struct RecipeView: View {
                         Label("Browse All", systemImage: "list.bullet")
                     }
                     NavigationLink {
-                        Text("Search page")
+                       SearchPageView(recipes: viewModel.recipes)
                     } label: {
                         Label("Search", systemImage: "magnifyingglass")
                     }
