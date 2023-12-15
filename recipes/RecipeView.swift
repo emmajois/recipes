@@ -209,57 +209,6 @@ struct RecipeView: View {
     }
     
     // MARK: - Variables
-//    private var browseAllList: some View {
-//        List {
-//            ForEach(viewModel.recipes) { recipe in
-//                NavigationLink {
-//                    detailView(for: recipe)
-//                } label: {
-//                    Text(recipe.title)
-//                }
-//            }
-//            .onDelete(perform: deleteRecipes)
-//        }
-//        .toolbar {
-//            ToolbarItem(placement: .navigationBarTrailing) {
-//                EditButton()
-//            }
-//            ToolbarItem {
-//                Button(action: openAddRecipeSheet) {
-//                    Label("Add Recipe", systemImage: "plus")
-//                }
-//                .sheet(isPresented: $showingAddRecipeSheet) {
-//                    AddSheetView(recipe: nil)
-//                }
-//            }
-//        }
-//    }
-//    
-//    private var browseFavoriteList: some View {
-//        List {
-//            ForEach(viewModel.favoriteRecipes) { recipe in
-//                NavigationLink {
-//                    detailView(for: recipe)
-//                } label: {
-//                    Text(recipe.title)
-//                }
-//            }
-//            .onDelete(perform: deleteRecipes)
-//        }
-//    }
-//    
-//    private var browseCategoryList: some View {
-//        List {
-//            ForEach(viewModel.recipeByCategory) { recipe in
-//                NavigationLink {
-//                    detailView(for: recipe)
-//                } label: {
-//                    Text(recipe.title)
-//                }
-//            }
-//            .onDelete(perform: deleteRecipes)
-//        }
-//    }
 }
 
 #Preview {
