@@ -111,6 +111,7 @@ class ViewModel {
             print("Failed to load filtered recipes")
         }
     }
+    
     private func fetchFavoriteRecipes() {
         do {
             let descriptor = FetchDescriptor<Recipe>(

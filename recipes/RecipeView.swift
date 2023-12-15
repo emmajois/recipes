@@ -39,7 +39,7 @@ struct RecipeView: View {
                         Label("Search", systemImage: "magnifyingglass")
                     }
                     NavigationLink {
-                        browseFavoriteList
+                        recipeListView(for: viewModel.favoriteRecipes)
                     } label: {
                         Label("Favorites", systemImage: "star.fill")
                     }
@@ -48,7 +48,11 @@ struct RecipeView: View {
                 Section(header: Text("Categories")) {
                     ForEach(viewModel.categories) { category in
                         NavigationLink {
-                            Text(category.categoryName)
+                            if category.recipes == [] {
+                                Text("No recipes under \(category.categoryName)")
+                            } else {
+                                recipeListView(for: viewModel.recipes.filter{$0.categories.contains(where: {$0.categoryName == category.categoryName})})
+                            }
                         } label: {
                             Text(category.categoryName)
                         }
@@ -230,32 +234,32 @@ struct RecipeView: View {
 //            }
 //        }
 //    }
-    
-    private var browseFavoriteList: some View {
-        List {
-            ForEach(viewModel.favoriteRecipes) { recipe in
-                NavigationLink {
-                    detailView(for: recipe)
-                } label: {
-                    Text(recipe.title)
-                }
-            }
-            .onDelete(perform: deleteRecipes)
-        }
-    }
-    
-    private var browseCategoryList: some View {
-        List {
-            ForEach(viewModel.recipeByCategory) { recipe in
-                NavigationLink {
-                    detailView(for: recipe)
-                } label: {
-                    Text(recipe.title)
-                }
-            }
-            .onDelete(perform: deleteRecipes)
-        }
-    }
+//    
+//    private var browseFavoriteList: some View {
+//        List {
+//            ForEach(viewModel.favoriteRecipes) { recipe in
+//                NavigationLink {
+//                    detailView(for: recipe)
+//                } label: {
+//                    Text(recipe.title)
+//                }
+//            }
+//            .onDelete(perform: deleteRecipes)
+//        }
+//    }
+//    
+//    private var browseCategoryList: some View {
+//        List {
+//            ForEach(viewModel.recipeByCategory) { recipe in
+//                NavigationLink {
+//                    detailView(for: recipe)
+//                } label: {
+//                    Text(recipe.title)
+//                }
+//            }
+//            .onDelete(perform: deleteRecipes)
+//        }
+//    }
 }
 
 #Preview {
