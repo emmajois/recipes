@@ -4,7 +4,7 @@
 //
 //  Created by Emma Swalberg on 12/13/23.
 //
-// Figured out how to bring up an edit sheet in the correct place: https://stackoverflow.com/questions/61176412/can-t-pass-data-correctly-to-modal-presentation-using-foreach-and-coredata-in-sw
+/// Figured out how to bring up an edit sheet in the correct place: https://stackoverflow.com/questions/61176412/can-t-pass-data-correctly-to-modal-presentation-using-foreach-and-coredata-in-sw
 
 import SwiftUI
 
@@ -54,13 +54,13 @@ struct EditCategoryView: View {
                     }
                 }
             }
-            
         }
         .onAppear{
             categoryName = category.categoryName
         }
     }
     
+    //MARK: - Functions
     private func deleteRecipe(offsets: IndexSet) {
         withAnimation {
             for index in offsets {

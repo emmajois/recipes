@@ -28,7 +28,6 @@ struct EditInstructionView: View {
                     Stepper("Step Number: \(instructionOrder)", value: $instructionOrder, in: 0...100, step: 1)
                 }
             }
-            
             .navigationTitle("Edit Instructions")
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -51,12 +50,13 @@ struct EditInstructionView: View {
         }
     }
     
+    //MARK: - Functions
     private func saveInstruction() {
         instruction.instructionDescription = instructionDescription
         instruction.order = instructionOrder
         
         viewModel.saveData()
-    
+        
         dismiss()
     }
 }

@@ -21,10 +21,13 @@ final class Recipe {
     var expertise: Int
     var calories: Int
     var isFavorite: Bool
+    
     @Relationship(deleteRule: .cascade)
     var ingredients: [RecipeIngredient]
+    
     @Relationship(deleteRule: .cascade)
     var instructions: [RecipeInstruction]
+    
     var categories: [RecipeCategory]
     
     init(title: String, author: String, date: Date, prepTime: Int, cookTime: Int, servings: Int, expertise: Int, calories: Int, isFavorite: Bool, ingredients: [RecipeIngredient], instructions: [RecipeInstruction], categories: [RecipeCategory]) {
@@ -70,6 +73,7 @@ final class RecipeInstruction {
 @Model
 final class RecipeCategory {
     var categoryName: String
+    
     @Relationship(inverse: \Recipe.categories)
     var recipes: [Recipe] = []
     

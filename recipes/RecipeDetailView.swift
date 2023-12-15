@@ -10,9 +10,9 @@ import SwiftUI
 struct RecipeDetailView: View {
     @Environment(ViewModel.self) private var viewModel
     
-    @State private var isEditing = false
-    
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    
+    @State private var isEditing = false
     
     var recipe: Recipe
     
@@ -43,20 +43,20 @@ struct RecipeDetailView: View {
                 }
                 .padding()
                 //categories
-                    VStack {
-                        LazyVGrid (columns: columns) {
-                            ForEach(recipe.categories) {category in
-                                VStack{
-                                    Button(category.categoryName, systemImage: "xmark.circle") {
-                                        deleteCategory(categoryToDelete: category)
-                                    }
-                                    .padding()
-                                    .background(Capsule().fill(.white).stroke(.blue))
-                                    .foregroundStyle(.blue)
+                VStack {
+                    LazyVGrid (columns: columns) {
+                        ForEach(recipe.categories) {category in
+                            VStack{
+                                Button(category.categoryName, systemImage: "xmark.circle") {
+                                    deleteCategory(categoryToDelete: category)
                                 }
+                                .padding()
+                                .background(Capsule().fill(.white).stroke(.blue))
+                                .foregroundStyle(.blue)
                             }
                         }
                     }
+                }
                 //metadata
                 VStack{
                     Text("Recipe Information")

@@ -29,14 +29,13 @@ struct AddInstructionView: View {
                     InstructionListView(recipeInstructions: $recipeInstructions)
                 }
             }
-            
             .navigationTitle(instructionTitle)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(action: {
                         dismiss()
                     }, label: {
-                            Text("Save")
+                        Text("Save")
                     })
                 }
                 ToolbarItem(placement: .cancellationAction){
@@ -48,15 +47,16 @@ struct AddInstructionView: View {
         }
     }
     
+    //MARK: - Functions & Computed Properties
     private var instructionTitle: String {
         recipeInstructions.count == 0 ? "Add instructions" : "Edit instructions"
     }
     
     private func addInstruction() {
         let newInstruction = RecipeInstruction(
-                instructionDescription: instructionDescription,
-                order: instructionOrder
-            )
+            instructionDescription: instructionDescription,
+            order: instructionOrder
+        )
         
         instructionDescription = ""
         instructionOrder+=1

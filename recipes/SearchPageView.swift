@@ -23,7 +23,7 @@ struct SearchPageView: View {
                 }
             }
         }
-        .navigationTitle("Search Recipes by Title")
+        .navigationTitle("Search by Title")
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always ))
     }
     

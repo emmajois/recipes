@@ -40,6 +40,7 @@ struct RecipeListView: View {
         }
     }
     
+    //MARK: - Functions
     private func openAddRecipeSheet() {
         showingAddRecipeSheet.toggle()
     }

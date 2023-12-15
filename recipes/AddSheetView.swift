@@ -12,6 +12,7 @@ struct AddSheetView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(ViewModel.self) private var viewModel
     
+    //Recipe will be nil if new
     let recipe: Recipe?
     
     //All the recipe fields
@@ -39,9 +40,7 @@ struct AddSheetView: View {
     
     var body: some View {
         NavigationStack {
-            
             ///Form help:  https://blog.logrocket.com/building-forms-swiftui-comprehensive-guide/
-            
             Form {
                 //Recipe metadata
                 Section(header: Text("Recipe Information")) {
@@ -139,7 +138,7 @@ struct AddSheetView: View {
         recipe == nil ? "Add Instructions" : "Edit Instructions"
     }
     
-    //MARK: - Funcs
+    //MARK: - Functions
     private func openIngredientModal() {
         showingAddIngredientSheet.toggle()
     }

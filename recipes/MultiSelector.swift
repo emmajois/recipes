@@ -5,14 +5,15 @@
 //  Created by Emma Swalberg on 12/12/23.
 //
 
-///This code sample came from https://www.fline.dev/multi-selector-in-swiftui/
-///
+///This code came from here:  https://www.fline.dev/multi-selector-in-swiftui/
+
 import SwiftUI
 
 struct MultiSelector<LabelView: View, Selectable: Identifiable & Hashable>: View {
     let label: LabelView
     let options: [Selectable]
     let optionToString: (Selectable) -> String
+    
     var selected: Binding<Set<Selectable>>
     
     private var formattedSelectedListString: String {
@@ -45,7 +46,7 @@ struct MultiSelector_Previews: PreviewProvider {
         let string: String
         var id: String { string }
     }
-  
+    
     @State
     static var selected: Set<IdentifiableString> = Set(["A", "C"].map { IdentifiableString(string: $0) })
     
@@ -62,6 +63,3 @@ struct MultiSelector_Previews: PreviewProvider {
         }
     }
 }
-//#Preview {
-//    MultiSelector()
-//}

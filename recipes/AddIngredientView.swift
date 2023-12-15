@@ -49,6 +49,7 @@ struct AddIngredientView : View {
         }
     }
     
+    //MARK: - Functions & Computed Properties
     private var ingredientTitle: String {
         recipeIngredients.count == 0 ? "Add ingredients" : "Edit ingredients"
     }

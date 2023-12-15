@@ -12,7 +12,7 @@ import SwiftUI
 struct MultiSelectionView<Selectable: Identifiable & Hashable>: View {
     let options: [Selectable]
     let optionToString: (Selectable) -> String
-
+    
     @Binding
     var selected: Set<Selectable>
     
@@ -22,18 +22,20 @@ struct MultiSelectionView<Selectable: Identifiable & Hashable>: View {
                 Button(action: { toggleSelection(selectable: selectable) }) {
                     HStack {
                         Text(optionToString(selectable)).foregroundColor(.black)
-
+                        
                         Spacer()
-
+                        
                         if selected.contains(where: { $0.id == selectable.id }) {
                             Image(systemName: "checkmark").foregroundColor(.accentColor)
                         }
                     }
-                }.tag(selectable.id)
+                }
+                .tag(selectable.id)
             }
-        }.listStyle(GroupedListStyle())
+        }
+        .listStyle(GroupedListStyle())
     }
-
+    
     private func toggleSelection(selectable: Selectable) {
         if let existingIndex = selected.firstIndex(where: { $0.id == selectable.id }) {
             selected.remove(at: existingIndex)
@@ -49,7 +51,7 @@ struct MultiSelectionView_Previews: PreviewProvider {
         let string: String
         var id: String { string }
     }
-
+    
     @State
     static var selected: Set<IdentifiableString> = Set(["A", "C"].map { IdentifiableString(string: $0) })
     

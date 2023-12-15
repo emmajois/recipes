@@ -49,12 +49,14 @@ struct EditIngredientView: View {
         .onAppear {
             ingredientName = ingredient.ingredientName
             ingredientMeasurement = ingredient.measurement
+            
             if let ingredientNotePassed = ingredient.note {
                 ingredientNote = ingredientNotePassed
             }
         }
     }
-
+    
+    //MARK: - Functions
     private func saveIngredient() {
         ingredient.ingredientName = ingredientName
         ingredient.measurement = ingredientMeasurement

@@ -42,13 +42,14 @@ struct ManageCategoryView: View {
         }
     }
     
+    //MARK: - Functions
     private func updateSelectedCategory(newSelectedCategory: RecipeCategory) {
         selectedCategory = newSelectedCategory
     }
     
     private func addCategory() {
         let newCategory = RecipeCategory(categoryName: categoryName)
-
+        
         var isNotDuplicate = true
         
         viewModel.categories.forEach { category in
@@ -71,8 +72,4 @@ struct ManageCategoryView: View {
             }
         }
     }
-}
-
-#Preview {
-    ManageCategoryView()
 }

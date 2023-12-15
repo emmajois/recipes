@@ -27,7 +27,6 @@ struct IngredientListView: View {
                                 isEditingIngredient = selectedIngredient != nil
                             }
                         }
-                        
                     } else {
                         HStack{
                             Text("\(ingredient.ingredientName): \(ingredient.measurement) - \(note)")
@@ -60,6 +59,7 @@ struct IngredientListView: View {
         }
     }
     
+    //MARK: - Functions
     private func editIngredient(ingredient: RecipeIngredient) {
         selectedIngredient = ingredient
         isEditingIngredient = true

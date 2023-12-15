@@ -31,7 +31,7 @@ struct RecipeView: View {
                         Label("Browse All", systemImage: "list.bullet")
                     }
                     NavigationLink {
-                       SearchPageView(recipes: viewModel.recipes)
+                        SearchPageView(recipes: viewModel.recipes)
                     } label: {
                         Label("Search", systemImage: "magnifyingglass")
                     }
@@ -66,7 +66,7 @@ struct RecipeView: View {
             }
         } content: {
             RecipeListView(recipeList: viewModel.recipes)
-
+            
         } detail: {
             Text("Select a recipe")
         }
@@ -99,7 +99,7 @@ struct RecipeView: View {
                 for: Recipe.self, RecipeCategory.self,
                 configurations:
                     ModelConfiguration(isStoredInMemoryOnly: true)
-                )
+            )
         } catch {
             fatalError("Failed to create ModelContainer for Recipes.")
         }

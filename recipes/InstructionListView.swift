@@ -10,7 +10,7 @@ import SwiftUI
 struct InstructionListView: View {
     @Binding var recipeInstructions : [RecipeInstruction]
     
-    @State var isEditingInstruction : Bool = false 
+    @State var isEditingInstruction : Bool = false
     @State var selectedInstruction : RecipeInstruction? = nil
     
     var body: some View {
@@ -35,6 +35,7 @@ struct InstructionListView: View {
         }
     }
     
+    //MARK: - Functions
     private func updateSelectedInstruction(newSelectedInstruction: RecipeInstruction) {
         selectedInstruction = newSelectedInstruction
     }
@@ -44,16 +45,17 @@ struct InstructionListView: View {
             for index in offsets {
                 recipeInstructions.remove(at:index)
             }
+            
             fixOrder()
         }
+    }
+    
+    private func fixOrder() {
+        var newOrder = 1
         
-        func fixOrder() {
-            var newOrder = 1
-            
-            recipeInstructions.forEach { instruction in
-                instruction.order = newOrder
-                newOrder+=1
-            }
+        recipeInstructions.forEach { instruction in
+            instruction.order = newOrder
+            newOrder+=1
         }
     }
 }
