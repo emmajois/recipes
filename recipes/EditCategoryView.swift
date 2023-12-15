@@ -28,7 +28,7 @@ struct EditCategoryView: View {
                     TextField("Category Name", text: $categoryName)
                 }
                 if category.recipes != [] {
-                    Section(header: Text("Remove Recipes")){
+                    Section(header: Text("Slide to Remove Recipes from Category")){
                         List{
                             ForEach(category.recipes){ recipe in
                                 Text(recipe.title)
