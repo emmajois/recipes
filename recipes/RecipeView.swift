@@ -14,9 +14,6 @@ struct RecipeView: View {
     @State private var viewModel: ViewModel
     @State private var hasError = false
     @State private var errorMessage = ""
-    @State private var isEditing = false
-    
-    @State private var showingAddRecipeSheet = false
     
     //MARK: - Initialize
     init(_ modelContext: ModelContext) {
@@ -26,10 +23,10 @@ struct RecipeView: View {
     var body: some View {
         NavigationSplitView {
             List {
-                // a section for browse, search, favorites
+                // A section for browse, search, favorites
                 Section(header: Text("Actions")) {
                     NavigationLink {
-                        recipeListView(for: viewModel.recipes)
+                        RecipeListView(recipeList: viewModel.recipes)
                     } label: {
                         Label("Browse All", systemImage: "list.bullet")
                     }
@@ -39,25 +36,26 @@ struct RecipeView: View {
                         Label("Search", systemImage: "magnifyingglass")
                     }
                     NavigationLink {
-                        recipeListView(for: viewModel.favoriteRecipes)
+                        RecipeListView(recipeList: viewModel.favoriteRecipes)
                     } label: {
                         Label("Favorites", systemImage: "star.fill")
                     }
                 }
-                // all the categories
+                // A section for all the categories
                 Section(header: Text("Categories")) {
                     ForEach(viewModel.categories) { category in
                         NavigationLink {
                             if category.recipes == [] {
                                 Text("No recipes under \(category.categoryName)")
                             } else {
-                                recipeListView(for: viewModel.recipes.filter{$0.categories.contains(where: {$0.categoryName == category.categoryName})})
+                                RecipeListView(recipeList: viewModel.recipes.filter{$0.categories.contains(where: {$0.categoryName == category.categoryName})})
                             }
                         } label: {
                             Text(category.categoryName)
                         }
                     }
                 }
+                // A section for the edit category view
                 Section(header: Text("Edit Categories")) {
                     NavigationLink{
                         ManageCategoryView()
@@ -67,7 +65,7 @@ struct RecipeView: View {
                 }
             }
         } content: {
-            recipeListView(for: viewModel.recipes)
+            RecipeListView(recipeList: viewModel.recipes)
 
         } detail: {
             Text("Select a recipe")
@@ -92,123 +90,6 @@ struct RecipeView: View {
         }
         .environment(viewModel)
     }
-    
-//MARK: - Functions
-    private func openAddRecipeSheet() {
-        showingAddRecipeSheet.toggle()
-    }
-    
-    private func deleteRecipes(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                viewModel.deleteRecipe(viewModel.recipes[index])
-            }
-        }
-    }
-    
-    private func recipeListView(for recipeList: [Recipe]) -> some View {
-        List {
-            ForEach(recipeList) { recipe in
-                NavigationLink {
-                    RecipeDetailView(recipe: recipe)
-                } label: {
-                    Text(recipe.title)
-                }
-            }
-            .onDelete(perform: deleteRecipes)
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                EditButton()
-            }
-            ToolbarItem {
-                Button(action: openAddRecipeSheet) {
-                    Label("Add Recipe", systemImage: "plus")
-                }
-                .sheet(isPresented: $showingAddRecipeSheet) {
-                    AddSheetView(recipe: nil)
-                }
-            }
-        }
-    }
-    
-//    private func detailView(for recipe: Recipe) -> some View {
-//        ScrollView {
-//            VStack {
-//                //title
-//                HStack{
-//                    Text(recipe.title)
-//                        .font(.title)
-//                    .padding()
-//                    if recipe.isFavorite {
-//                        Button("", systemImage: "star.fill") {
-//                            toggleIsFavorite(recipeToToggle: recipe)
-//                        }
-//                    } else {
-//                        Button("", systemImage: "star") {
-//                            toggleIsFavorite(recipeToToggle: recipe)
-//                        }
-//                    }
-//                }
-//                //metadata
-//                //TODO: ADD METADATA TO THE VIEW
-//                //categories
-//                HStack {
-//                    ForEach(recipe.categories) {category in
-//                        VStack{
-//                            Button(category.categoryName, systemImage: "xmark.circle") {
-//                                //toggleIsFavorite(recipeToToggle: recipe)
-//                            }.padding()
-//                            //Text(category.categoryName)
-//                                .background(Capsule().fill(.white).stroke(.blue))
-//                                .foregroundStyle(.blue)
-//                        }
-//                    }
-//                }
-//                //ingredients
-//                Text("Ingredients")
-//                    .font(.subheadline)
-//                if recipe.ingredients.count > 0 {
-//                    ForEach(recipe.ingredients.sorted(by: { $0.ingredientName < $1.ingredientName })) { ingredient in
-//                        Text("\(ingredient.ingredientName): \(ingredient.measurement)")
-//                    }
-//                } else {
-//                    Text("No ingredients!").padding()
-//                }
-//                //instructions
-//                Text("Instructions")
-//                    .font(.subheadline)
-//                if recipe.instructions.count > 0 {
-//                    ForEach(recipe.instructions.sorted(by: { $0.order < $1.order })) { instruction in
-//                        Text("\(instruction.order): \(instruction.instructionDescription)")
-//                    }
-//                } else {
-//                    Text("No instructions!").padding()
-//                }
-//
-//            }
-//            .toolbar {
-//                ToolbarItem(placement: .primaryAction) {
-//                    Button(action: {
-//                        isEditing = true
-//                    }, label: {
-//                        Label("Edit Item", systemImage: "pencil")
-//                    })
-//                }
-//            }
-//            .sheet(isPresented: $isEditing){
-//                AddSheetView(recipe: recipe)
-//            }
-//        }
-//    }
-//    
-//    private func toggleIsFavorite(recipeToToggle: Recipe) {
-//        recipeToToggle.isFavorite.toggle()
-//        
-//        viewModel.saveData()
-//    }
-    
-    // MARK: - Variables
 }
 
 #Preview {
