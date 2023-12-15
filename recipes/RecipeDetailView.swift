@@ -12,6 +12,8 @@ struct RecipeDetailView: View {
     
     @State private var isEditing = false
     
+    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    
     var recipe: Recipe
     
     var body: some View {
@@ -41,18 +43,20 @@ struct RecipeDetailView: View {
                 }
                 .padding()
                 //categories
-                HStack {
-                    ForEach(recipe.categories) {category in
-                        VStack{
-                            Button(category.categoryName, systemImage: "xmark.circle") {
-                                deleteCategory(categoryToDelete: category)
-                            }.padding()
-                            //Text(category.categoryName)
-                                .background(Capsule().fill(.white).stroke(.blue))
-                                .foregroundStyle(.blue)
+                    VStack {
+                        LazyVGrid (columns: columns) {
+                            ForEach(recipe.categories) {category in
+                                VStack{
+                                    Button(category.categoryName, systemImage: "xmark.circle") {
+                                        deleteCategory(categoryToDelete: category)
+                                    }
+                                    .padding()
+                                    .background(Capsule().fill(.white).stroke(.blue))
+                                    .foregroundStyle(.blue)
+                                }
+                            }
                         }
                     }
-                }
                 //metadata
                 VStack{
                     Text("Recipe Information")
