@@ -17,7 +17,7 @@ struct SearchPageView: View {
         List {
             ForEach(searchResults, id:\.self) { recipe in
                 NavigationLink {
-                    Text(recipe.title)
+                    RecipeDetailView(recipe: recipe)
                 } label: {
                     Text(recipe.title)
                 }
